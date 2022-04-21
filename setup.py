@@ -14,5 +14,5 @@ setup(
     author_email='data-team@saferitesolutions.com',
     license='',
     install_requires=['requests~=2.27'],
-    packages=['books','bigcommerce']
+    packages=['books', 'bigcommerce', 'saferite']
 )
