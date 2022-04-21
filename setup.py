@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from distutils.core import setup
 
 version = '1.0.0'
 homepage = 'https://github.com/Saferite-Data-Team'
