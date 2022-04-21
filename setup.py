@@ -1,8 +1,4 @@
 from setuptools import setup, find_packages
-import sys
-
-if sys.version_info < (3, 4):
-    requires.append('enum34')
 
 version = '1.0.0'
 homepage = 'https://github.com/Saferite-Data-Team'
@@ -17,6 +13,6 @@ setup(
     author='Saferite Data Team',
     author_email='data-team@saferitesolutions.com',
     license='',
-    install_requires=['requests~=2.27'],
+    install_requires=['requests~=2.27', 'wheel'],
     packages=find_packages()
 )
