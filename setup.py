@@ -1,4 +1,3 @@
-from setuptools import find_packages
 from distutils.core import setup
 
 version = '1.0.0'
@@ -14,6 +13,6 @@ setup(
     author='Saferite Data Team',
     author_email='data-team@saferitesolutions.com',
     license='',
-    install_requires=['requests~=2.27', 'wheel'],
-    packages=find_packages()
+    install_requires=['requests~=2.27'],
+    packages=['books','bigcommerce']
 )
