@@ -1,13 +1,17 @@
 from setuptools import setup, find_packages
+import sys
 
-version = '0.1'
+if sys.version_info < (3, 4):
+    requires.append('enum34')
+
+version = '1.0.0'
 homepage = 'https://github.com/Saferite-Data-Team'
 description = 'Saferite Data Team Library'
 requires = ['requests']
 
 setup(
     name='saferite-data-team',
-    version = '1.0.0',
+    version = version,
     description=description,
     url=homepage,
     author='Saferite Data Team',
