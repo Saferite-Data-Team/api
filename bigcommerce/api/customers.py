@@ -10,3 +10,6 @@ class Customer:
     
     def get_by_id(self, customer_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{customer_id}', 'GET')
+    
+    def list(self, **kwargs):
+        return self.base.api._standard_call(self.module, 'GET', **kwargs)
