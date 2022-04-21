@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 version = '1.0.0'
 homepage = 'https://github.com/Saferite-Data-Team'
@@ -14,5 +14,5 @@ setup(
     author_email='data-team@saferitesolutions.com',
     license='',
     install_requires=['requests~=2.27'],
-    packages=['books', 'bigcommerce', 'saferite']
+    packages=find_packages()
 )
