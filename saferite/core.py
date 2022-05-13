@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 import requests
 import json
+import jsonschema
+from abc import ABC
 
 @dataclass
 class API:
@@ -74,3 +76,13 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
+class ZohoData(ABC):
+
+    @property
+    def json(self):
+        data = {k: v for k,v in self.__dict__.items() if v is not None}
+        try:
+            jsonschema.validate(data, self.schema)
+            return data
+        except jsonschema.exceptions.ValidationError as err:
+            return err.message

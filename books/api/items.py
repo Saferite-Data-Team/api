@@ -1,5 +1,75 @@
 from dataclasses import dataclass
-from saferite.core import ZohoBooksBase
+from saferite.core import ZohoBooksBase, ZohoData
+
+ITEM_SCHEMA = {
+    "name": "ItemData",
+    "type": "object",
+    "properties": {
+        "name": { "type": "string" },
+        "rate": { "type": "number" },
+        "description": { "type": "string" },
+        "tax_percentage": {"type": "string"},
+        "sku": { "type": "string" },
+        "product_type": {
+            "type": "string",
+            "enum": ["goods", "service", "digital_service"]
+            },
+        "is_taxable": {"type": "boolean"},
+        "tax_exemption_id": {"type": "string"},
+        "account_id": {"type": "string"},
+        "avatax_tax_code": {"type": "string"},
+        "avatax_use_code": {"type": "string"},
+        "item_type": {
+            "type": "string",
+            "enum": ["sales", "purchases", "sales_and_purchases", "inventory"]
+            },
+        "purchase_description": {"type": "string"},
+        "purchase_rate": {"type": "string"},
+        "purchase_account_id": {"type": "string"},
+        "inventory_account_id": {"type": "string"},
+        "vendor_id": {"type": "string"},
+        "reorder_level": {"type": "string"},
+        "initial_stock": {"type": "string"},
+        "initial_stock_rate": {"type": "string"}
+        },
+    "additionalProperties": False,
+    "if": {
+        "properties": {"is_taxable": {"const": True}}
+    },
+    "then": {
+        "required": ["name", "rate"]
+    },
+    "else": {
+        "required": ["name", "rate", "tax_exemption_id"]
+    }
+        }
+
+@dataclass
+class ItemData(ZohoData):
+    name: str
+    rate: float
+    description: str = None
+    tax_percentage: str = None
+    sku: str = None
+    product_type: str = None
+    is_taxable: bool = None
+    tax_exemption_id: str = None
+    account_id: str = None
+    avatax_tax_code: str = None
+    avatax_use_code: str = None
+    item_type: str = None
+    purchase_description: str = None
+    purchase_rate: str = None
+    purchase_account_id: str = None
+    inventory_account_id: str = None
+    vendor_id: str = None
+    reorder_level: str = None
+    initial_stock: str = None
+    initial_stock_rate: str = None
+
+    @property
+    def schema(self):
+        return ITEM_SCHEMA
 
 @dataclass
 class Items:
@@ -23,7 +93,7 @@ class Items:
         """
         return self.base.api._standard_call(f'{self.module}/{item_id}', 'GET')
     
-    def delete(self, item_id:str):
+    def delete(self, item_id:str) -> dict:
         """Delete the selected item.
         Items that are part of transaction cannot be deleted.
 
@@ -35,7 +105,7 @@ class Items:
         """
         return self.base.api._standard_call(f'{self.module}/{item_id}', 'DELETE')
 
-    def mark_as_active(self, item_id:str):
+    def mark_as_active(self, item_id:str) -> dict:
         """Mark an inactive item as active.
 
         Args:
@@ -46,7 +116,7 @@ class Items:
         """
         return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'POST')
     
-    def mark_as_inactive(self, item_id:str):
+    def mark_as_inactive(self, item_id: str) -> dict:
         """Mark an active item as inactive.
 
         Args:
@@ -57,14 +127,14 @@ class Items:
         """
         return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'POST')
 
-    def create(self, data: dict):
+    def create(self, data: ItemData) -> dict:
         """
         Creates a new item in Zoho Books.
         Call example_data method to build the JSON.
         """
         return self.base.api._standard_call(self.module, 'POST', data=data)
     
-    def update(self, item_id:str, data:dict):
+    def update(self, item_id:str, data:dict) -> dict:
         """Update the details of an item
 
         Args:
@@ -75,41 +145,3 @@ class Items:
             Response: dict
         """
         return self.base.api._standard_call(f'{self.module}/{item_id}', 'PUT', data=data)
-    
-
-    def example_data(self) -> dict:
-        """Example item data JSON. Use it as reference for item creation or update.
-
-        Returns:
-            dict
-        """
-        data = {
-            "name": "Hard Drive",
-            "rate": 120,
-            "description": "500GB",
-            "tax_percentage": "70%",
-            "sku": "s12345",
-            "product_type": "goods",
-            "hsn_or_sac": "string",
-            "is_taxable": True,
-            "tax_exemption_id": "string",
-            "account_id": " ",
-            "avatax_tax_code": 982000000037049,
-            "avatax_use_code": 982000000037049,
-            "item_type": " ",
-            "purchase_description": " ",
-            "purchase_rate": " ",
-            "purchase_account_id": " ",
-            "inventory_account_id": " ",
-            "vendor_id": " ",                      
-            "reorder_level": " ",
-            "initial_stock": " ",
-            "initial_stock_rate": " ",
-            "item_tax_preferences": [
-                {
-                    "tax_id": 982000000037049,
-                    "tax_specification": "intra"
-                    }
-                    ]
-                    }
-        return data
