@@ -19,7 +19,8 @@ inv_token = db.OAuth.find_one({'_id':ObjectId('606c717b970ed2835e2db208')})['tok
 def main():
     bc = BC(ISP_TOKEN, ISP_CLIENT, ISP_HASH)
     print(bc.customer.get_by_id('127764'))
-    # zoho = Books(books_token)
+    zoho = Books(books_token)
+    zoho.salesorder.create()
     # print(zoho.items.list(page=2))
     
 if __name__ == '__main__':

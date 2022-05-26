@@ -1,8 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 import requests
-import json
-import jsonschema
-from abc import ABC
+from datetime import datetime
 
 @dataclass
 class API:
@@ -14,31 +12,8 @@ class API:
     def _standard_call(self, module: str, call_type: str, data: dict=None, **kwargs):
         self.payload = f'{self.endpoint}{self.prefix}{module}{self.suffix}'
         additional_args = locals()['kwargs']
-        if len(additional_args) == 0:
-            self.params = None
-            self.data = data
-        else:
-            self.data = data
-            self.params = {}
-            keys = []
-            extra_param = {}
-            for i in kwargs:
-                keys.append(i)
-                extra_param = {i: additional_args[i]}
-                self.params.update(extra_param)
-        if call_type == 'GET':
-            self.request = requests.get(url=self.payload, headers=self.headers, params=self.params,data=self.data).text
-        elif call_type == 'POST':
-            self.request = requests.post(url=self.payload, headers=self.headers, params=self.params,data=self.data).text
-        elif call_type == 'PUT':
-            self.request = requests.put(url=self.payload, headers=self.headers, params=self.params,data=self.data).text
-        elif call_type == 'DELETE':
-            self.request = requests.delete(url=self.payload, headers=self.headers, params=self.params,data=self.data).text
-        try:
-            self.r = json.loads(self.request)
-        except:
-            self.r = self.request
-        return self.r
+        self.params = None if len(additional_args) == 0 else additional_args
+        return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
 
 @dataclass
 class ZohoBooksBase():
@@ -76,13 +51,41 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
-class ZohoData(ABC):
+class ZohoData:
 
     @property
     def json(self):
-        data = {k: v for k,v in self.__dict__.items() if v is not None}
-        try:
-            jsonschema.validate(data, self.schema)
-            return data
-        except jsonschema.exceptions.ValidationError as err:
-            return err.message
+        return {k: v for k,v in self.__dict__.items() if v is not None and k not in ['data'] and not k.startswith('_')}
+    
+    def __post_init__(self):
+        for field in fields(self):
+            value = getattr(self, field.name)
+            if not isinstance(value, field.type) and value is not None:
+                raise ValueError(f'Expected {field.name} to be {field.type}, 'f'got {type(value)}')
+    
+    def enum_validation(self, field_name:str, enum:set):
+        if getattr(self,field_name) not in enum:
+            raise ValueError(f'The allowed values for {field_name} are {enum}')
+    
+    def date_validation(self, date_fields: list, date_format:str):
+        for date in date_fields:
+            datetime.strptime(date, date_format)
+
+#From StackOverflow answer by @Ilya_Peterov
+from typing import get_type_hints
+
+def strict_types(f):
+    def type_checker(*args, **kwargs):
+        hints = get_type_hints(f)
+
+        all_args = kwargs.copy()
+        all_args.update(dict(zip(f.__code__.co_varnames, args)))
+
+        for key in all_args:
+            if key in hints:
+                if type(all_args[key]) != hints[key]:
+                    raise Exception(f'Type of {key} is {type(all_args[key])} and not {hints[key]}')
+
+        return f(*args, **kwargs)
+
+    return type_checker

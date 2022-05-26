@@ -1,11 +1,16 @@
 from dataclasses import dataclass
-from saferite.core import ZohoBooksBase
+from saferite.core import ZohoBooksBase, strict_types
+from books.data import SOData, AddressData
 
 @dataclass
 class SalesOrder:
-    def __init__(self, token:str, organization_id:str):
+    token:str
+    organization_id:str
+    
+    def __post_init__(self):
+        self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module = 'salesorders'
-        self.base: ZohoBooksBase = ZohoBooksBase(token, organization_id)
+    
     
     def get_by_id(self, order_id: str):
         """Get the details of a sales order.
@@ -16,9 +21,10 @@ class SalesOrder:
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}', 'GET')
+        return self.base.api._standard_call(f'{self.module}/{order_id}', 'get')
     
-    def create(self, data: dict):
+    @strict_types
+    def create(self, data: SOData):
         """Create a sales order for your customer.
 
         Args:
@@ -27,21 +33,25 @@ class SalesOrder:
         Returns:
             Response
         """
-        return self.base.api._standard_call(self.module, 'POST', data=data)
+        return self.base.api._standard_call(self.module, 'post', data=str(data.json))
     
     def list(self, page: int=1):
-        return self.base.api._standard_call(self.module, 'GET', page=page)
+        return self.base.api._standard_call(self.module, 'get', page=page)
     
-    def update(self, order_id:str, data:dict):
-        return self.base.api._standard_call(f'{self.module}/{order_id}', 'PUT', data=data)
+    @strict_types
+    def update(self, order_id:str, data:SOData):
+        if not isinstance(data, SOData):
+            raise TypeError(f'data must be a SOData not {type(data)}')
+        return self.base.api._standard_call(f'{self.module}/{order_id}', 'put', data=str(data.json))
     
     def delete(self, order_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}', 'DELETE')
+        return self.base.api._standard_call(f'{self.module}/{order_id}', 'delete')
     
     def mark_as_void(self, order_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/status/void', 'POST')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/status/void', 'post')
     
-    def send_email(self, order_id:str, data):
+    @strict_types
+    def send_email(self, order_id:str, data: dict):
         """Email a sales order to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
 
         Args:
@@ -67,12 +77,13 @@ class SalesOrder:
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}/email', 'POST', data=data)
+        return self.base.api._standard_call(f'{self.module}/{order_id}/email', 'post', data=data)
     
     def email_content(self, order_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/email', 'GET')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/email', 'get')
 
-    def update_billing_address(self, order_id:str, data:dict):
+    @strict_types
+    def update_billing_address(self, order_id:str, data:AddressData):
         """Updates the billing address for the actual sales order.
 
         Args:
@@ -92,9 +103,12 @@ class SalesOrder:
                 "is_verified": true
             }
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}/address/billing', 'PUT', data=data)
+        if not isinstance(data, AddressData):
+            raise TypeError(f'data must be a SOData not {type(data)}')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/address/billing', 'put', data=str(data.json))
 
-    def update_shipping_address(self, order_id:str, data:dict):
+    @strict_types
+    def update_shipping_address(self, order_id:str, data:AddressData):
         """Updates the shipping address for the actual sales order.
 
         Args:
@@ -114,27 +128,29 @@ class SalesOrder:
                 "is_verified": true
             }
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}/address/shipping', 'PUT', data=data)
+        return self.base.api._standard_call(f'{self.module}/{order_id}/address/shipping', 'put', data=data)
 
     def template_list(self):
         """Get all sales order templates ids
         """
-        return self.base.api._standard_call(f'{self.module}/templates', 'GET')
+        return self.base.api._standard_call(f'{self.module}/templates', 'get')
     
     def update_template(self, order_id:str, template_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/templates/{template_id}', 'PUT')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/templates/{template_id}', 'put')
     
+    @strict_types
     def add_attachment(self, order_id:str, attachment:bytes, document_ids:str, can_send_in_email:bool):
         return self.base.api._standard_call(
             f'{self.module}/{order_id}/attachment',
-            'POST',
+            'post',
             attachment=attachment,
             document_ids=document_ids,
             can_send_in_email=can_send_in_email
             )
     
+    @strict_types
     def update_attachment_preference(self, order_id:str, can_send_in_email:bool):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'PUT', can_send_in_email=can_send_in_email)
+        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'put', can_send_in_email=can_send_in_email)
     
     def get_attachment(self, order_id:str):
         """Returns the file attached to the sales order.
@@ -145,22 +161,23 @@ class SalesOrder:
         Returns:
             File attached (bytes)
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'GET')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'get')
     
     def delete_attachment(self, order_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'DELETE')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/attachment', 'delete')
 
     def add_comment(self, order_id:str, comment:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'POST', description=comment)
+        data = {'description': comment}
+        return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'post', data=str(data))
     
     def list_comments(self, order_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'GET')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'get')
 
     def update_comment(self, order_id:str, comment_id:str, comment:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/comments/{comment_id}', 'PUT', description=comment)
+        return self.base.api._standard_call(f'{self.module}/{order_id}/comments/{comment_id}', 'put', description=comment)
     
     def delete_comment(self, order_id:str, comment_id:str):
-        return self.base.api._standard_call(f'{self.module}/{order_id}/comments/{comment_id}', 'DELETE')
+        return self.base.api._standard_call(f'{self.module}/{order_id}/comments/{comment_id}', 'delete')
 
     
 
