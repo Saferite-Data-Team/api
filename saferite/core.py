@@ -64,12 +64,14 @@ class ZohoData:
                 raise ValueError(f'Expected {field.name} to be {field.type}, 'f'got {type(value)}')
     
     def enum_validation(self, field_name:str, enum:set):
-        if getattr(self,field_name) not in enum:
+        if getattr(self,field_name) not in enum and getattr(self,field_name) is not None:
             raise ValueError(f'The allowed values for {field_name} are {enum}')
     
     def date_validation(self, date_fields: list, date_format:str):
         for date in date_fields:
-            datetime.strptime(date, date_format)
+            value = getattr(self,date)
+            if value is not None:
+                datetime.strptime(value, date_format)
 
 #From StackOverflow answer by @Ilya_Peterov
 from typing import get_type_hints

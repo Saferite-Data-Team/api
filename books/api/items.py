@@ -13,7 +13,7 @@ class Items:
 
     def list(self, page: int = 1) -> dict:
         """Get the list of all active items with pagination."""
-        return self.base.api._standard_call(self.module, 'GET', page=page)
+        return self.base.api._standard_call(self.module, 'get', page=page)
 
     def get_by_id(self, item_id: str) -> dict:
         """Get details of an existing item.
@@ -24,7 +24,7 @@ class Items:
         Returns:
             dict: Response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}', 'GET')
+        return self.base.api._standard_call(f'{self.module}/{item_id}', 'get')
     
     def delete(self, item_id:str) -> dict:
         """Delete the selected item.
@@ -36,7 +36,7 @@ class Items:
         Returns:
             dict: Response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}', 'DELETE')
+        return self.base.api._standard_call(f'{self.module}/{item_id}', 'delete')
 
     def mark_as_active(self, item_id:str) -> dict:
         """Mark an inactive item as active.
@@ -47,7 +47,7 @@ class Items:
         Returns:
             dict: API response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'POST')
+        return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'post')
     
     def mark_as_inactive(self, item_id: str) -> dict:
         """Mark an active item as inactive.
@@ -58,7 +58,7 @@ class Items:
         Returns:
             dict: API response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'POST')
+        return self.base.api._standard_call(f'{self.module}/{item_id}/activate', 'post')
 
     @strict_types
     def create(self, data: ItemData) -> dict:
@@ -66,7 +66,7 @@ class Items:
         Creates a new item in Zoho Books.
         Call example_data method to build the JSON.
         """
-        return self.base.api._standard_call(self.module, 'POST', data=data)
+        return self.base.api._standard_call(self.module, 'post', data=data)
     
     @strict_types
     def update(self, item_id:str, data:dict) -> dict:
@@ -79,4 +79,4 @@ class Items:
         Returns:
             dict: Response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}', 'PUT', data=data)
+        return self.base.api._standard_call(f'{self.module}/{item_id}', 'put', data=data)

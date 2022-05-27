@@ -161,7 +161,7 @@ class SOData(ZohoData):
         
         self.enum_validation("_so_channel", SO_CHANNELS)
         self.date_validation(['date', 'shipment_date'], '%Y-%m-%d')
-        
+        self.line_items = self.line_items.data
         custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None}
 
         custom_ids = {

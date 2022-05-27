@@ -13,8 +13,6 @@ class Contacts:
     
     @strict_types
     def create(self, data:ContactData):
-        if not isinstance(data, ContactData):
-            raise TypeError(f'Expected data to be ContactData, got {type(data)}')
         return self.base.api._standard_call(self.module, 'post', data=str(data.json))
     
     def list(self, page:int = 1):

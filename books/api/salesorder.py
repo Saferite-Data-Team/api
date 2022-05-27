@@ -40,8 +40,6 @@ class SalesOrder:
     
     @strict_types
     def update(self, order_id:str, data:SOData):
-        if not isinstance(data, SOData):
-            raise TypeError(f'data must be a SOData not {type(data)}')
         return self.base.api._standard_call(f'{self.module}/{order_id}', 'put', data=str(data.json))
     
     def delete(self, order_id:str):
@@ -103,8 +101,6 @@ class SalesOrder:
                 "is_verified": true
             }
         """
-        if not isinstance(data, AddressData):
-            raise TypeError(f'data must be a SOData not {type(data)}')
         return self.base.api._standard_call(f'{self.module}/{order_id}/address/billing', 'put', data=str(data.json))
 
     @strict_types
