@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field, fields
 import requests
 from datetime import datetime
+import base64
 
 @dataclass
 class API:
@@ -15,7 +16,6 @@ class API:
         self.params = None if len(additional_args) == 0 else additional_args
         return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
 
-@dataclass
 class ZohoBooksBase():
     def __init__(self, token:str, organization_id:str):
         self.api = API(
@@ -26,7 +26,6 @@ class ZohoBooksBase():
             suffix = f'?organization_id={organization_id}'
         )
 
-@dataclass
 class ZohoInventoryBase():
     def __init__(self, token:str, organization_id:str):
         self.api = API(
@@ -37,7 +36,6 @@ class ZohoInventoryBase():
             suffix = f'?organization_id={organization_id}'
         )
 
-@dataclass
 class BCBase():
     def __init__(self, token:str, client:str, store_hash:str, version:int):
         self.api = API(
@@ -51,7 +49,17 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
-class ZohoData:
+class ShipstationBase():
+    def __init__(self, username:str, password:str):
+        base64_auth = base64.b64encode(f'{username}:{password}'.encode()).decode('utf-8')
+        self.api = API(
+            endpoint = 'https://ssapi.shipstation.com/',
+            headers = {
+                'Authorization': f'Basic {base64_auth}'
+            }
+        )
+    
+class Data:
 
     @property
     def json(self):

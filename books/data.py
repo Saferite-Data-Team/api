@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field, fields
-from saferite.core import ZohoData
+from saferite.core import Data
 
 @dataclass
-class ItemData(ZohoData):
+class ItemData(Data):
     name: str
     rate: float
     description: str = None
@@ -37,7 +37,7 @@ class ItemData(ZohoData):
             raise TypeError('tax_exemption_id is required when is_taxable is False')
 
 @dataclass
-class SOLineItems(ZohoData):
+class SOLineItems(Data):
     item_id: str
     rate: float
     quantity: int
@@ -101,7 +101,7 @@ class SOLineItems(ZohoData):
         self.data = []
 
 @dataclass
-class SOData(ZohoData):
+class SOData(Data):
     customer_id: str
     date: str
     line_items: SOLineItems
@@ -177,7 +177,7 @@ class SOData(ZohoData):
             self.custom_fields.append(data)
     
 @dataclass
-class AddressData(ZohoData):
+class AddressData(Data):
     """
     Args:
         address: str
@@ -194,7 +194,7 @@ class AddressData(ZohoData):
         is_verified: bool = None
 
     Returns:
-        ZohoData
+        Data
     """
     address: str
     city: str
@@ -210,7 +210,7 @@ class AddressData(ZohoData):
     is_verified: bool = None
 
 @dataclass
-class ContactPersonData(ZohoData):
+class ContactPersonData(Data):
     first_name: str
     last_name: str
     email:str
@@ -225,7 +225,7 @@ class ContactPersonData(ZohoData):
     
 
 @dataclass
-class DefaultTemplates(ZohoData):
+class DefaultTemplates(Data):
     invoice_template_id: str = None
     estimate_template_id: str = None
     creditnote_template_id: str = None
@@ -245,7 +245,7 @@ class DefaultTemplates(ZohoData):
   
 
 @dataclass
-class ContactData(ZohoData):
+class ContactData(Data):
     contact_name: str
     company_name: str
     billing_address: AddressData
