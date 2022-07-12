@@ -1,3 +1,4 @@
 all = [
-    'main'
+    'main',
+    'data',
 ]

@@ -1,3 +1,8 @@
 __all__ = [
-    'customers'
+    'brands',
+    'carts',
+    'categories',
+    'customers',
+    'orders',
+    'products',
 ]

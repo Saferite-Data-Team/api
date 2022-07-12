@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field, fields
+import json
 import requests
 from datetime import datetime
 import base64
@@ -14,7 +15,13 @@ class API:
         self.payload = f'{self.endpoint}{self.prefix}{module}{self.suffix}'
         additional_args = locals()['kwargs']
         self.params = None if len(additional_args) == 0 else additional_args
-        return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
+        try:
+            if type(dict) == dict:
+                return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data).json()
+            else:
+                return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data.json).json()
+        except requests.exceptions.JSONDecodeError:
+            return {'data': None}
 
 class ZohoBooksBase():
     def __init__(self, token:str, organization_id:str):
@@ -48,6 +55,12 @@ class BCBase():
             },
             prefix=f'/v{version}/'
         )
+
+    def _convert_ids(self, ids:list) -> str:
+        string = ''
+        for id in ids:
+            string += str(id) + ','
+        return string[0:len(string)-1]
 
 class ShipstationBase():
     def __init__(self, username:str, password:str):
