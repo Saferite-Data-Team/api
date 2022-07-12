@@ -2,16 +2,16 @@ from books.main import Books
 from bigcommerce.main import BC
 import pymongo
 from bson import ObjectId
-import os
+from env import ENV
 
-MONGO_USER = os.environ['mongo_user']
-MONGO_PASS = os.environ['mongo_pass']
-MONGO_SERVER = os.environ['mongo_server']
-ISP_TOKEN = os.environ['isp_token']
-ISP_HASH = os.environ['isp_hash']
-ISP_CLIENT = os.environ['isp_client']
+MONGO_USER = ENV['mongo_user']
+MONGO_PASS = ENV['mongo_pass']
+MONGO_SERVER = ENV['mongo_server']
+ISP_TOKEN = ENV['isp_token']
+ISP_HASH = ENV['isp_hash']
+ISP_CLIENT = ENV['isp_client']
 
-mongo = pymongo.MongoClient(f'mongodb://{MONGO_USER}:{MONGO_PASS}{MONGO_SERVER}/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false')
+mongo = pymongo.MongoClient(f'mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_SERVER}/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false')
 db = mongo['Zoho_Mirror']
 books_token = db.OAuth.find_one({'_id': ObjectId('60101de5d25a83d3ca0d8139')})['token']
 inv_token = db.OAuth.find_one({'_id':ObjectId('606c717b970ed2835e2db208')})['token']
