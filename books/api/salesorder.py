@@ -35,7 +35,7 @@ class SalesOrder:
         """
         return self.base.api._standard_call(self.module, 'post', data=str(data.json))
     
-    def list(self, page: int=1):
+    def get_all(self, page: int=1):
         return self.base.api._standard_call(self.module, 'get', page=page)
     
     @strict_types
@@ -166,7 +166,7 @@ class SalesOrder:
         data = {'description': comment}
         return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'post', data=str(data))
     
-    def list_comments(self, order_id:str):
+    def get_all_comments(self, order_id:str):
         return self.base.api._standard_call(f'{self.module}/{order_id}/comments', 'get')
 
     def update_comment(self, order_id:str, comment_id:str, comment:str):

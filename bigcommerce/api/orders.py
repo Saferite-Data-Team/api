@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from saferite.core import BCBase
-from ..data import OrderData
+from saferite.core import BCBase, strict_types
+from ..data import OrderData, RefundData, ShipmentData, ShippingAddressData
 
 @dataclass
 class Order:
@@ -9,46 +9,50 @@ class Order:
         self.base = BCBase(token, client, store_hash, 2)
         self.base3 = BCBase(token, client, store_hash, 3)
 
-    def list(self, **kwargs) -> list:
+    def get_all(self, **kwargs) -> list:
         return self.base.api._standard_call(self.module, 'get', **kwargs)
 
     def get_by_id(self, order_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}', 'get')
 
+    @strict_types
     def create(self, data:OrderData) -> dict:
         return self.base.api._standard_call(self.module, 'post', data)
 
+    @strict_types
     def update(self, order_id:str, data:OrderData) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}', 'put', data)
 
     def delete(self, order_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}', 'delete')
 
-    def list_coupons(self, order_id:str) -> list:
+    def get_all_coupons(self, order_id:str) -> list:
         return self.base.api._standard_call(f'{self.module}/{order_id}/coupons', 'get')
 
-    def list_products(self, order_id:str) -> list:
+    def get_all_products(self, order_id:str) -> list:
         return self.base.api._standard_call(f'{self.module}/{order_id}/products', 'get')
 
     def get_product_by_id(self, order_id:str, product_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/products/{product_id}', 'get')
 
-    def list_statuses(self, **kwargs) -> list:
+    def get_all_statuses(self, **kwargs) -> list:
         return self.base.api._standard_call('order_statuses', 'get')
 
     def get_status_by_id(self, status_id:str) -> dict:
         return self.base.api._standard_call(f'order_statuses/{status_id}', 'get')
 
-    def list_shipments(self, order_id:str) -> list:
+    def get_all_shipments(self, order_id:str) -> list:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipments', 'get')
 
     def get_shipment_by_id(self, order_id:str, shipment_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipments/{shipment_id}', 'get')
 
-    def create_shipment(self, order_id:str, data:dict) -> dict:
+    @strict_types
+    def create_shipment(self, order_id:str, data:ShipmentData) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipments', 'post', data)
 
-    def update_shipment(self, order_id:str, shipment_id:str, data:dict) -> dict:
+    @strict_types
+    def update_shipment(self, order_id:str, shipment_id:str, data:ShipmentData) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipments/{shipment_id}', 'put', data)
 
     def delete_shipments(self, order_id:str) -> dict:
@@ -57,19 +61,20 @@ class Order:
     def delete_shipment_by_id(self, order_id:str, shipment_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipments/{shipment_id}', 'delete')
 
-    def list_shipping_addresses(self, order_id:str) -> list:
+    def get_all_shipping_addresses(self, order_id:str) -> list:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipping_addresses','get')
 
     def get_shipping_addresses_by_id(self, order_id:str, address_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipping_addresses/{address_id}','get')
 
-    def update_shipping_addresses(self, order_id:str, address_id:str, data:dict) -> dict:
+    @strict_types
+    def update_shipping_addresses(self, order_id:str, address_id:str, data:ShippingAddressData) -> dict:
         return self.base.api._standard_call(f'{self.module}/{order_id}/shipping_addresses/{address_id}','put', data)
 
-    def list_transactions(self, order_id:str) -> dict:
+    def get_all_transactions(self, order_id:str) -> dict:
         return self.base3.api._standard_call(f'{self.module}/{order_id}/transactions', 'get')
 
-    def list_refunds(self, **kwargs) -> dict:
+    def get_all_refunds(self, **kwargs) -> dict:
         return self.base3.api._standard_call(f'{self.module}/payment_actions/refunds', 'get', **kwargs)
 
     def get_refund_by_id(self, refund_id:str) -> dict:
@@ -78,5 +83,6 @@ class Order:
     def get_refunds_by_order(self, order_id:str) -> dict:
         return self.base3.api._standard_call(f'{self.module}/{order_id}/payment_actions/refunds', 'get')
 
-    def create_refund(self, order_id:str, data:dict) -> dict:
+    @strict_types
+    def create_refund(self, order_id:str, data:RefundData) -> dict:
         return self.base3.api._standard_call(f'{self.module}/{order_id}/payment_actions/refunds', 'post', data)

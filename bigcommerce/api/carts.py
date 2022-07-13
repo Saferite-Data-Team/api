@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from saferite.core import BCBase
+from saferite.core import BCBase, strict_types
 from ..data import CartData
 
 @dataclass
@@ -11,6 +11,7 @@ class Cart:
     def get_by_id(self, cart_id:str) -> dict:
         return self.base.api._standard_call(f'{self.module}/{cart_id}', 'get')
 
+    @strict_types
     def create(self, data:CartData) -> dict:
         return self.base.api._standard_call(self.module, 'get', data)
 

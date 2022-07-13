@@ -5,6 +5,6 @@ class Shipments(ShipstationBase):
         self.base = ShipstationBase(username, password)
         self.module = 'shipments'
         
-    def list(self, **kwargs) -> dict:
+    def get_all(self, **kwargs) -> dict:
         additional_args = ''.join([f'{k}={str(v)}&' for k,v in locals()['kwargs'].items()])[:-1]
         return self.base.api._standard_call(f'{self.module}?{additional_args}', 'get', **kwargs)

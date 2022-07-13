@@ -2,6 +2,25 @@ from dataclasses import dataclass
 from saferite.core import Data
 
 @dataclass
+class AddressData(Data):
+    customer_id: int
+    first_name: str
+    last_name: str
+    city: str
+    country_code: str
+    address1: str
+    address2: str = None
+    company: str = None
+    state_or_province: str = None
+    postal_code: str = None
+    phone: str = None
+    address_type: str = None
+    form_fields: list = None
+
+    def __post_init__(self):
+        super().__post_init__()
+
+@dataclass
 class BrandData(Data):
     name: str
     page_title: str = None
@@ -51,7 +70,6 @@ class CategoryData(Data):
             'use_store_settings', 'featured', 'newest',
             'best_selling', 'alpha_asc', 'alpha_desc',
             'avg_customer_review', 'price_asc', 'price_desc'
-
         }
 
         self.enum_validation('default_product_sort', DEFAULT_PRODUCT_SORT_TYPES)
@@ -74,6 +92,7 @@ class CustomerData(Data):
     origin_channel_id: int = None
     channel_ids: list = None
     form_fields: list = None
+    id: int = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -131,10 +150,50 @@ class OrderData(Data):
         self.enum_validation('payment_method', PAYMENT_METHOD_TYPES)
         self.enum_validation('tax_provider_id', TAX_PROVIDER_TYPES)
 
+@dataclass
+class ShipmentData(Data):
+    order_address_id: int
+    items: list
+    tracking_number: str = None
+    shipping_method: str = None
+    shipping_provider: str = None
+    tracking_carrier: str = None
+    comments: str = None
+
+    def __post_init__(self):
+        super().__post_init__()
+
+@dataclass
+class ShippingAddressData(Data):
+    first_name: str = None
+    last_name: str = None
+    company: str = None
+    street_1: str = None
+    street_2: str = None
+    city: str = None
+    state: str = None
+    zip: str = None
+    country: str = None
+    country_iso_2: str = None
+    phone: str = None
+    email: str = None
+    shipping_method: str = None
+
+    def __post_init__(self):
+        super().__post_init__()
+
+@dataclass
+class RefundData(Data):
+    items: list
+    payments: list
+    reason: str
+    merchant_calculated_override: dict
+
+    def __post_init__(self):
+        super().__post_init__()
 
 @dataclass
 class ProductData(Data):
-    id: int
     name: str
     type: str
     weight: float

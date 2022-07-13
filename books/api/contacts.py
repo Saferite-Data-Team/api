@@ -15,7 +15,7 @@ class Contacts:
     def create(self, data:ContactData):
         return self.base.api._standard_call(self.module, 'post', data=str(data.json))
     
-    def list(self, page:int = 1):
+    def get_all(self, page:int = 1):
         return self.base.api._standard_call(self.module, 'get', page=page)
     
     @strict_types
@@ -99,7 +99,7 @@ class Contacts:
         """
         return self.base.api._standard_call(f'{self.module}/{contact_id}/email', 'post', data=email, **kwargs)
     
-    def list_comments(self, contact_id:str):
+    def get_all_comments(self, contact_id:str):
         """List recent activities of a contact.
 
         Args:
@@ -121,7 +121,7 @@ class Contacts:
     def delete_additional_address(self, contact_id:str, address_id:str):
         return self.base.api._standard_call(f'{self.module}/{contact_id}/address/{address_id}', 'delete')
     
-    def list_refunds(self, contact_id:str):
+    def get_all_refunds(self, contact_id:str):
         return self.base.api._standard_call(f'{self.module}/{contact_id}/refunds', 'get')
     
     def track_1099(self, contact_id:str):

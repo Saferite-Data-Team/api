@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field, fields
-import json
 import requests
 from datetime import datetime
 import base64
@@ -16,10 +15,9 @@ class API:
         additional_args = locals()['kwargs']
         self.params = None if len(additional_args) == 0 else additional_args
         try:
-            if type(dict) == dict:
-                return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data).json()
-            else:
-                return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data.json).json()
+            return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data.json).json()
+        except AttributeError:
+            return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data).json()
         except requests.exceptions.JSONDecodeError:
             return {'data': None}
 
@@ -61,6 +59,12 @@ class BCBase():
         for id in ids:
             string += str(id) + ','
         return string[0:len(string)-1]
+    
+    def _serializer(self, data:list) -> list:
+        converted = []
+        for element in data:
+            converted.append(element.json)
+        return converted
 
 class ShipstationBase():
     def __init__(self, username:str, password:str):
