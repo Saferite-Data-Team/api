@@ -12,7 +12,7 @@ class Estimates:
         self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module = 'estimates'
     
-    def create(self, data:SOData, send:bool, ignore_auto_number_generation:bool):
+    def create(self, data:SOData, send:bool=None, ignore_auto_number_generation:bool=None):
         """Create an estimate for your customer.
 
         Args:
@@ -37,7 +37,7 @@ class Estimates:
         return self.base.api._standard_call(f'{self.module}', 'get', page=page)
     
     @strict_types
-    def update(self, estimate_id: str, data:SOData,ignore_auto_number_generation:bool):
+    def update(self, estimate_id: str, data:SOData,ignore_auto_number_generation:bool=None):
         """Update an existing estimate. To delete a line item just remove it from the line_items list.
 
         Args:
@@ -137,7 +137,7 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/approve', 'post')
 
-    def send_email(self, estimate_id:str, data:dict, attachments:bytes):
+    def send_email(self, estimate_id:str, data:dict, attachments:bytes=None):
         """Email an estimate to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
 
         Args:
@@ -236,7 +236,7 @@ class Estimates:
         Returns: 
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}/addreess/shipping','put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}/address/shipping','put', data=data)
 
     def get_all_templates(self):
 

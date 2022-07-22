@@ -14,7 +14,7 @@ class Invoice:
         self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module = 'invoices'
 
-    def create (self, data:dict, send:boolean, ignore_auto_generation:bool):
+    def create (self, data:dict, send:boolean, ignore_auto_generation:bool=None):
         """Create an invoice for your customer.
 
         Args:
@@ -99,7 +99,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/status/draft', 'post')
 
-    def send_email(self, invoice_id:str, data:dict, attachments:bytes, send_customer_statement:bool, send_attachments:bool):
+    def send_email(self, invoice_id:str, data:dict, attachments:bytes=None, send_customer_statement:bool=None, send_attachments:bool=None):
         """Email an invoice to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
         Args:
             invoice_id(str)
@@ -182,7 +182,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/email','get')
     
-    def remind_customer( self, invoice_id:str, data:dict, send_customer_statement:bool, attachments:bytes):
+    def remind_customer( self, invoice_id:str, data:dict, send_customer_statement:bool=None, attachments:bytes=None):
         """Remind your customer about an unpaid invoice by email. Reminder will be sent, only for the invoices which are in open or overdue status.
 
         Args:
@@ -427,7 +427,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/creditsapplied/{creditnotes_invoice_id}','delete')
         
-    def add_cattachment( self, invoice_id:str, can_send_in_email:bool, attchment:bytes) :
+    def add_cattachment( self, invoice_id:str, can_send_in_email:bool=None, attchment:bytes=None) :
 
         """Attach a file to an invoice.
 
@@ -443,7 +443,7 @@ class Invoice:
 
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','post', can_send_in_email=can_send_in_email, attchment=attchment)
 
-    def update_attachment_preference(self,invoice_id:str, can_send_in_email:bool):
+    def update_attachment_preference(self,invoice_id:str, can_send_in_email:bool=None):
 
         """Set whether you want to send the attached file while emailing the invoice.
 
@@ -458,7 +458,7 @@ class Invoice:
         
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','put',can_send_in_email=can_send_in_email)
 
-    def get_invoice_attachment(self, invoice_id, preview:bytes):
+    def get_invoice_attachment(self, invoice_id, preview:bytes=None):
         """Returns the file attached to the invoice.
 
         Args:
@@ -494,7 +494,7 @@ class Invoice:
         return self.base.api._standard_call(f'{self.module}/expenses/{expense_id}/receipt','delete')
         
 
-    def add_comments( self, invoice_id:str, description:str, payment_expected_date:Date, show_comments_to_clients:bool):
+    def add_comments( self, invoice_id:str, description:str, payment_expected_date:Date, show_comments_to_clients:bool=None):
 
         """Add a comment for an invoice.
 
@@ -525,7 +525,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/comments','get')
 
-    def update_comment(self, invoice_id:str, comment_id:str, description:str, show_comments_to_clients:bool):
+    def update_comment(self, invoice_id:str, comment_id:str, description:str, show_comments_to_clients:bool)=None:
         """Update an existing comment of an invoice.
 
         Args:
