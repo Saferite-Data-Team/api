@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field, fields
+from tokenize import Double
+from xmlrpc.client import boolean
 from saferite.core import Data
 
 @dataclass
@@ -41,6 +43,7 @@ class SOLineItems(Data):
     item_id: str
     rate: float
     quantity: int
+    bcy_rate:float = None
     line_item_id: str = None
     item_order: str = None
     name: str = None
@@ -48,16 +51,33 @@ class SOLineItems(Data):
     product_type: str = None
     warehouse_id: str = None #Replace with Miami Warehouse ID
     discount: str = None
+    discount_amount:float = None
     tax_id: str = None
     tags: list = None
     unit: str = None
     item_custom_fields: list = None #Replace with actual custom fields
+    tax_name: str = None
+    tax_type: str = None
+    tax_percentage: str = None
+    tax_treatment_code: str = None
+    header_name: str = None
     tax_exemption_id: str = None
     tax_exemption_code: str = None
     avatax_exempt_no: str = None
     avatax_use_code: str = None
     project_id: str = None
     data: list = field(default_factory=list, init=False)
+    expense_id:str = None
+    expense_receipt_name: str = None
+    time_entry_ids:list =None
+    custom_body : str = None
+    custom_subject: str = None
+    notes: str = None
+    terms: str = None
+    shipping_charge: str = None
+    adjustment: float = None 
+    adjustment_description: str = None
+
 
     def __call__(
         self,
@@ -78,7 +98,11 @@ class SOLineItems(Data):
         tax_exemption_code: str = None,
         avatax_exempt_no: str = None,
         avatax_use_code: str = None,
-        project_id: str = None
+        project_id: str = None,
+        expense_id:str = None,
+        expense_receipt_name: str = None,
+        time_entry_ids:list =None
+
     ):
         _data = {k:v for k, v in locals().items() if v is not None and k != "self"}
         for k, v in _data.items():
@@ -100,8 +124,80 @@ class SOLineItems(Data):
     def reset_data(self):
         self.data = []
 
+
 @dataclass
 class SOData(Data):
+    """Data model for SO, Invoices and Estimates
+
+    Args:
+    _transaction_type: str (required)
+    customer_id: str (required)
+    date: str (required)
+    line_items: SOLineItems (required)
+    _so_channel: str (required)
+    contact_persons: list 
+    shipment_date: str (only SO)
+    custom_fields: list 
+    salesperson_id: str
+    salesperson_name: str 
+    merchant_id: str (only SO)
+    notes: str 
+    terms: str
+    billing_address_id: str
+    shipping_address_id: str
+    crm_owner_id: str (only SO)
+    crm_custom_reference_id: str  (only SO)
+    salesorder_number: str (only SO)
+    reference_number: str 
+    is_update_customer: bool  (only SO)
+    discount: str
+    exchange_rate: str 
+    notes_default: str (only SO)
+    terms_default: str (only SO)
+    tax_id: str
+    tax_authority_id: str 
+    tax_exemption_id: str 
+    tax_authority_name: str
+    tax_exemption_code: str 
+    shipping_charge: float
+    adjustment: float 
+    delivery_method: str (only SO)
+    estimate_id: str 
+    discount_type: str
+    adjustment_description: str 
+    pricebook_id: str (only SO)
+    template_id: str 
+    documents: list 
+    zcrm_potential_id: str   (only SO)
+    zcrm_potential_name: str  (only SO)
+    _dropship_po: str
+    _isp_sales_rep: str
+    invoice_number: str  (only invoice)
+    due_date: str   (only invoice)
+    is_discount_before_tax: bool 
+    recurring_invoice_id: str  (only invoice)
+    invoice_estimate_id: str (only invoice)
+    allow_partial_payments: str (only invoice)
+    estimate_number:str (only estimate)
+    expiry_date: str (only estimates)
+    reason: str 
+    payment_options: dict   (only invoice) ='payment_options': {'payment_gateways': [{'configured': True,
+            'can_show_billing_address': False,
+            'is_bank_account_applicable': False,
+            'can_pay_using_new_card': True,
+            'gateway_name': 'braintree'}]},
+
+    tags: list (only invoice)=[
+                {
+                    "is_tag_mandatory": false,
+                    "tag_id": 982000000009070,
+                    "tag_name": "Location",
+                    "tag_option_id": 982000000002670,
+                    "tag_option_name": "USA"
+                }
+            ],
+        """
+    _transaction_type: str
     customer_id: str
     date: str
     line_items: SOLineItems
@@ -110,6 +206,7 @@ class SOData(Data):
     shipment_date: str = None
     custom_fields: list = field(default_factory=list, init=False)
     salesperson_id: str = None
+    salesperson_name: str = None
     merchant_id: str = None
     notes: str = None
     terms: str = None
@@ -122,7 +219,6 @@ class SOData(Data):
     is_update_customer: bool = None
     discount: str = None
     exchange_rate: str = None
-    salesperson_name: str = None
     notes_default: str = None
     terms_default: str = None
     tax_id: str = None
@@ -134,7 +230,6 @@ class SOData(Data):
     adjustment: float = None
     delivery_method: str = None
     estimate_id: str = None
-    is_discount_before_tax: bool = None
     discount_type: str = None
     adjustment_description: str = None
     pricebook_id: str = None
@@ -143,6 +238,23 @@ class SOData(Data):
     zcrm_potential_id: str = None
     zcrm_potential_name: str = None
     _dropship_po: str = None
+    _isp_sales_rep: str = None
+    invoice_number: str =None
+    due_date: str =None
+    is_discount_before_tax: bool = None
+    recurring_invoice_id: str = None
+    invoice_estimate_id: str = None
+    allow_partial_payments: boolean = None
+    estimate_number:str= None
+    expiry_date: str= None
+    reason: str = None
+    payment_options: dict = None
+    tags: list = None
+
+
+
+
+
 
     def __post_init__(self):
         super().__post_init__()
@@ -158,20 +270,35 @@ class SOData(Data):
             'Square',
             'MDF Vendors'
         }
+
+        TRANSACTION_TYPE = {
+            'SO',
+            'INV',
+            'EST'
+        }
         
         self.enum_validation("_so_channel", SO_CHANNELS)
+        self.enum_validation("_transaction_type", TRANSACTION_TYPE)
         self.date_validation(['date', 'shipment_date'], '%Y-%m-%d')
         self.line_items = self.line_items.data
-        custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None}
+        custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
+        print(custom_data)
 
         custom_ids = {
+            'SO': {
             '_so_channel': '1729377000039969865',
             '_dropship_po': '1729377001216648872'
+            },
+            'INV': {
+            '_so_channel': '1729377000880233358',
+            '_dropship_po': '1729377001216648914'
+            }
+
         }
 
         for field in custom_data:
             data = {
-                'customfield_id': custom_ids[field],
+                'customfield_id': custom_ids[self.__dict__['_transaction_type']][field],
                 'value': custom_data[field]
             }
             self.custom_fields.append(data)

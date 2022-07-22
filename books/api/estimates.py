@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from xmlrpc.client import boolean
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
@@ -11,16 +12,18 @@ class Estimates:
         self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module = 'estimates'
     
-    def create(self, data:SOData):
+    def create(self, data:SOData, send:bool, ignore_auto_number_generation:bool):
         """Create an estimate for your customer.
 
         Args:
             data (SOData)
+            send(bool)
+            ignore_auto_number_generation(boolean)
 
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}', 'post', data=data)
+        return self.base.api._standard_call(f'{self.module}', 'post', data=data, send= send, ignore_auto_number_generation= ignore_auto_number_generation)
     
     def get_all(self, page:int=1):
         """List all estimates with pagination.
@@ -34,18 +37,19 @@ class Estimates:
         return self.base.api._standard_call(f'{self.module}', 'get', page=page)
     
     @strict_types
-    def update(self, estimate_id: str, data:SOData):
+    def update(self, estimate_id: str, data:SOData,ignore_auto_number_generation:bool):
         """Update an existing estimate. To delete a line item just remove it from the line_items list.
 
         Args:
             estimate_id (str)
             data(SOData)
+            ignore_auto_number_generation(bool)
 
         Returns:
             Response
 
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}', 'put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}', 'put', data=data,ignore_auto_number_generation= ignore_auto_number_generation)
 
 
     def get_by_id(self, estimate_id: str):
@@ -133,7 +137,7 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/approve', 'post')
 
-    def send_email(self, estimate_id:str, data:dict):
+    def send_email(self, estimate_id:str, data:dict, attachments:bytes):
         """Email an estimate to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
 
         Args:
@@ -151,12 +155,13 @@ class Estimates:
                 "subject": "Statement of transactions with Zillium Inc",
                 "body": "Dear Customer,   Thanks for your business enquiry.         The estimate EST-000002 is attached with this email.        We can get started if you send us your consent. For any assistance you can reach us via email or phone.         Looking forward to hearing back from you. Here's an overview of the estimate for your reference.        Estimate Overview:        Estimate  : EST-000002         Date : 03 Oct 2013        Amount : $36.47 Regards<br>\\nZillium Inc<br>\\n\"\""
             }
+            attachments(bytes)
 
         Returns: 
             Response
         
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}/email','post', data=data)
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}/email','post', data=data, attachments=attachments)
 
     def get_email_content(self, estimated_id:str):
         """Get the email content of an estimate.
@@ -288,7 +293,7 @@ class Estimates:
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/comments','get')
 
     def update_comment(self, estimate_id:str, data:dict, comment_id:str):
-        """Updates the shipping address for an existing estimate alone.
+        """Update an existing comment of an estimate.
 
         Args:
         estimate_id(str)
@@ -306,7 +311,7 @@ class Estimates:
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/comments/{comment_id}','put', data=data)
     
     def delete_comment(self, estimate_id:str, comment_id:str):
-        """Updates the shipping address for an existing estimate alone.
+        """Delete an estimate comment.
 
         Args:
             estimate_id(str)
