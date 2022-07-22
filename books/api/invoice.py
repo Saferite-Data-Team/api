@@ -1,10 +1,9 @@
 from ast import Str
-from asyncio import AbstractChildWatcher
 from dataclasses import dataclass
 from sqlite3 import Date
 from xmlrpc.client import boolean
 from saferite.core import ZohoBooksBase, strict_types
-from books.data import SOData, AddressData,ContactPersonData
+from books.data import SOData, AddressData
 
 @dataclass
 class Invoice:
@@ -312,7 +311,7 @@ class Invoice:
         Returns: 
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/addreess/billing','put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/address/billing','put', data=data)
 
     def update_shipping_address(self, invoice_id:str, data:AddressData):
         """Updates the shipping address for this invoice alone.
@@ -325,7 +324,7 @@ class Invoice:
         Returns: 
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/addreess/shipping','put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/address/shipping','put', data=data)
 
     def get_all_templates(self):
 

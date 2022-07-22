@@ -223,7 +223,7 @@ class Estimates:
         Returns: 
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}/addreess/billing','put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}/address/billing','put', data=data)
 
     def update_shipping_address(self, estimate_id:str, data:AddressData):
         """Updates the shipping address for an existing estimate alone.
