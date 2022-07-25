@@ -1,6 +1,4 @@
 from dataclasses import dataclass
-
-from requests import FileModeWarning
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
