@@ -49,6 +49,7 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
+
 class ShipstationBase():
     def __init__(self, username:str, password:str):
         base64_auth = base64.b64encode(f'{username}:{password}'.encode()).decode('utf-8')

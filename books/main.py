@@ -1,4 +1,4 @@
-from books.api import items, salesorder, contacts
+from books.api import items, salesorder, contacts, estimates, invoice
 from datetime import datetime
 
 class Books:
@@ -6,6 +6,8 @@ class Books:
         self.items = items.Items(token, organization_id)
         self.salesorder = salesorder.SalesOrder(token, organization_id)
         self.contacts = contacts.Contacts(token, organization_id)
+        self.estimates = estimates.Estimates(token, organization_id)
+        self.invoices = invoice.Invoice(token, organization_id)
 
     def __repr__(self):
         now = datetime.now()
