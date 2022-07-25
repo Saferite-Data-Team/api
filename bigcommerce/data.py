@@ -17,9 +17,6 @@ class AddressData(Data):
     address_type: str = None
     form_fields: list = None
 
-    def __post_init__(self):
-        super().__post_init__()
-
 @dataclass
 class BrandData(Data):
     name: str
@@ -30,9 +27,6 @@ class BrandData(Data):
     image_url: str = None
     custom_url: dict = None
 
-    def __post_init__(self):
-        super().__post_init__()
-
 @dataclass
 class CartData(Data):
     customer_id: int
@@ -42,9 +36,6 @@ class CartData(Data):
     channel_id: int = None
     currency: dict = None
     locale: str = None
-
-    def __post_init__(self):
-        super().__post_init__()
 
 @dataclass
 class CategoryData(Data):
@@ -179,8 +170,6 @@ class ShippingAddressData(Data):
     email: str = None
     shipping_method: str = None
 
-    def __post_init__(self):
-        super().__post_init__()
 
 @dataclass
 class RefundData(Data):
@@ -189,8 +178,7 @@ class RefundData(Data):
     reason: str
     merchant_calculated_override: dict
 
-    def __post_init__(self):
-        super().__post_init__()
+
 
 @dataclass
 class ProductData(Data):
