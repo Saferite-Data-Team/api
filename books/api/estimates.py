@@ -17,7 +17,7 @@ class Estimates:
         Args:
             data (SOData)
             send(bool)
-            ignore_auto_number_generation(boolean)
+            ignore_auto_number_generation(bool)
 
         Returns:
             Response
@@ -30,21 +30,21 @@ class Estimates:
 
         Args:
             page (int, optional): Defaults to 1.
-            estimate_number(str):Search estimates by estimate number.Variantsestimate_number_startswith and estimate_number_contains
-            reference_number(str):Search estimates by reference number.Variants reference_number_startswith and reference_number_contains
-            customer_name(str): Search estimates by customer name.Variants customer_name_startswith and customer_name_contains
-            total(str): arch estimates by estimate total.Variants total_less_than, total_less_equals, total_greater_than and total_greater_equals
-            customer_id(str): Search estimates by customer id..
+            estimate_number(str):Search estimates by estimate number.
+            reference_number(str):Search estimates by reference number.
+            customer_name(str): Search estimates by customer name.
+            total(str): arch estimates by estimate total..
+            customer_id(str): Search estimates by customer id.
             item_id(str): ID of the item.
-            status(str): Search estimates by status.Allowed Valuesdraft, sent, invoiced , accepted, declined and expired
-            item_name(str): Search estimates by item name.Variants item_name_starts with and item_name_contains
-            item_description(str):Search estimates by item description.Variants item_description_startswith and item_description_contains
-            custom_field(str):Search estimates by custom field.Variants custom_field_startswith and custom_field_contains
-            expiry_date(str):The date of expiration of the estimates
+            status(str): Search estimates by status.Allowed Values "draft", "sent", "invoiced" , "accepted", "declined" and "expired".
+            item_name(str): Search estimates by item name
+            item_description(str):Search estimates by item description.
+            custom_field(str):Search estimates by custom field.
+            expiry_date(str):The date of expiration of the estimates.
             date(str):Search estimates by estimate date.Variants date_start, date_end, date_before and date_after.
-            filter_by(str): Filter estimates by status.Allowed Values Status.All, Status.Sent, Status.Draft, Status.Invoiced, Status.Accepted, Status.Declined and Status.Expired
+            filter_by(str): Filter estimates by status.Allowed Values "Status.All", "Status.Sent", "Status.Draft", "Status.Invoiced", "Status.Accepted", "Status.Declined" and "Status.Expired".
             search_text(str): Search estimates by estimate number or reference or customer name.
-            sort_column(str): Sort estimates. Allowed Values customer_name, estimate_number, date, total and created_time
+            sort_column(str): Sort estimates. Allowed Values "customer_name", "estimate_number", "date", "total" and "created_time".
 
         Returns:
             Response
@@ -115,7 +115,6 @@ class Estimates:
 
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/status/accepted', 'post')
-
         
     def mark_as_declined(self, estimate_id:str):
         """Mark a sent estimate as declined if the customer has rejected it.
@@ -140,7 +139,6 @@ class Estimates:
 
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/submit', 'post')
-
 
     def approve_estimate(self, estimate_id:str):
         """Approve an estimate.
@@ -180,7 +178,7 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/email','post', data=data, attachments=attachments)
 
-    def get_email_content(self, estimated_id:str):
+    def get_email_content(self, estimate_id:str):
         """Get the email content of an estimate.
 
         Args:
@@ -190,7 +188,7 @@ class Estimates:
             Response
             
         """
-        return self.base.api._standard_call(f'{self.module}/{estimated_id}/email','get')
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}/email','get')
 
     def email_multiples(self, estimate_ids: str):
         """Send estimates to your customers by email. Maximum of 10 estimates can be sent at once.
@@ -277,7 +275,7 @@ class Estimates:
             Response
         
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}/templates/{template_id}')
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}/templates/{template_id}', 'get')
 
     def add_comments( self, estimate_id:str, data:dict) :
 

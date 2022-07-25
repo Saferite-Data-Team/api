@@ -424,7 +424,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/creditsapplied/{creditnotes_invoice_id}','delete')
         
-    def add_cattachment( self, invoice_id:str, can_send_in_email:bool=None, attchment:bytes=None) :
+    def add_attachment( self, invoice_id:str, can_send_in_email:bool=None, attchment:bytes=None) :
 
         """Attach a file to an invoice.
 
@@ -440,7 +440,7 @@ class Invoice:
 
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','post', can_send_in_email=can_send_in_email, attchment=attchment)
 
-    def update_attachment_preference(self,invoice_id:str, can_send_in_email:bool=None):
+    def update_attachment_preference(self,invoice_id:str, can_send_in_email:bool):
 
         """Set whether you want to send the attached file while emailing the invoice.
 
