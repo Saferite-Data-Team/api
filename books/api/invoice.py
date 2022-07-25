@@ -65,7 +65,7 @@ class Invoice:
             recurring_invoice_id (str):ID of the recurring invoice from which the invoice is created..
 
         Returns:
-            _type_: _description_
+            Response
         """
         return self.base.api._standard_call(f'{self.module}', 'get', page=page)
     
