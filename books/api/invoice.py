@@ -37,14 +37,35 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}', 'get')
 
-    def get_all(self, page:int=1):
-        """List all estimates with pagination.
+    def get_all(self, page:int=1, invoice_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
+            item_name:str=None, item_description:str=None, custom_field:str=None, due_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, last_modified_time:str=None, balance:str = None, \
+                email:str=None, recurring_invoice_id:str=None, ):
+        """_summary_
 
         Args:
-            page (int, optional): Defaults to 1.
+            page (int): Defaults to 1.
+            invoice_number (str): Search invoices by invoice number.
+            reference_number (str): Search invoices by item description.
+            customer_name (str):The name of the customer. Max-length [100]
+            total (str):The total amount to be paid
+            customer_id (str): ID of the customer the invoice has to be created.
+            item_id (str): Search invoices by item id.
+            status (str: Search invoices by invoice status.Allowed Values: "sent", "draft", "overdue", "paid", "void", "unpaid", "partially_paid" "and viewed".
+            item_name(str):Search invoices by item name.
+            item_description (str): Search invoices by item description.
+            custom_field (str):Search invoices by custom fields
+            due_date (str,): Search invoices by due date. Default date format is yyyy-mm-dd. 
+            date (str,): Search invoices by invoice date. Default date format is yyyy-mm-dd.
+            filter_by (str: Filter invoices by any status or payment expected date.Allowed Values: "Status.All", "Status.Sent", "Status.Draft", "Status.OverDue", "Status.Paid", "Status.Void", "Status.Unpaid", "Status.PartiallyPaid", "Status.Viewed" and "Date.PaymentExpectedDate".
+            search_text (str): Search invoices by invoice number or purchase order or customer name. Max-length [100]
+            sort_column (str): Sort invoices.Allowed Values: "customer_name", "invoice_number", "date", "due_date", "total", "balance" and "created_time".
+            last_modified_time (str): Default date format is yyyy-mm-dd.
+            balance (str): The unpaid amount
+            email(str):ID of the recurring invoice from which the invoice is created.
+            recurring_invoice_id (str):ID of the recurring invoice from which the invoice is created..
 
         Returns:
-            Response
+            _type_: _description_
         """
         return self.base.api._standard_call(f'{self.module}', 'get', page=page)
     
