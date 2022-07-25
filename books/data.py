@@ -127,7 +127,7 @@ class SOLineItems(Data):
 
 @dataclass
 class SOData(Data):
-    """Data model for SO, Invoices and Estimates
+    """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
 
     Args:
     _transaction_type: str (required)
