@@ -49,17 +49,6 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
-    def _convert_ids(self, ids:list) -> str:
-        string = ''
-        for id in ids:
-            string += str(id) + ','
-        return string[0:len(string)-1]
-    
-    def _serializer(self, data:list) -> list:
-        converted = []
-        for element in data:
-            converted.append(element.json)
-        return converted
 
 class ShipstationBase():
     def __init__(self, username:str, password:str):
