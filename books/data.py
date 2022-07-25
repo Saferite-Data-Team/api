@@ -196,6 +196,13 @@ class SOData(Data):
                     "tag_option_name": "USA"
                 }
             ],
+    is_draft: bool  (only CreditNotes)
+    credit_note_number: str (only CreditNotes)
+    delivery_date: str (only purchaseOrder)
+    vendor_id: str  (only purchaseOrder)
+    purchaseorder_number: str   (only purchaseOrder)
+    ship_via: str (only purchaseOrder)
+    delivery_org_address_id: str   (only purchaseOrder)
         """
     _transaction_type: str
     customer_id: str
@@ -250,9 +257,13 @@ class SOData(Data):
     reason: str = None
     payment_options: dict = None
     tags: list = None
-
-
-
+    is_draft: bool = None
+    credit_note_number: str = None
+    delivery_date: str = None
+    vendor_id: str = None
+    purchaseorder_number: str= None
+    ship_via: str = None
+    delivery_org_address_id: str = None
 
 
 

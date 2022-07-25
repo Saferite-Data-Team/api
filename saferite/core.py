@@ -14,12 +14,7 @@ class API:
         self.payload = f'{self.endpoint}{self.prefix}{module}{self.suffix}'
         additional_args = locals()['kwargs']
         self.params = None if len(additional_args) == 0 else additional_args
-        try:
-            return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data.json).json()
-        except AttributeError:
-            return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, json=data).json()
-        except requests.exceptions.JSONDecodeError:
-            return {'data': None}
+        return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
 
 class ZohoBooksBase():
     def __init__(self, token:str, organization_id:str):

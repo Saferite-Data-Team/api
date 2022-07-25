@@ -1,7 +1,4 @@
-from ast import Str
 from dataclasses import dataclass
-from sqlite3 import Date
-from xmlrpc.client import boolean
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
@@ -14,12 +11,13 @@ class Invoice:
         self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module = 'invoices'
 
-    def create (self, data:dict, send:boolean, ignore_auto_generation:bool=None):
+    @strict_types
+    def create (self, data:dict, send:bool, ignore_auto_generation:bool=None):
         """Create an invoice for your customer.
 
         Args:
             data (dict)
-            send(boolean)
+            send(bool)
             ignore_auto_generation(bool)
 
         Returns:
@@ -277,7 +275,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/paymentreminder','post')
     
-    def write_off_invoice(self,invoice_id):
+    def write_off_invoice(self,invoice_id:str):
         """Write off the invoice balance amount of an invoice.
         Args:
             invoice_id(str) 
@@ -288,7 +286,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/writeoff','post')
        
-    def cancel_write_off(self,invoice_id):
+    def cancel_write_off(self,invoice_id:str):
         """Cancel the write off amount of an invoice.
         Args:
             invoice_id(str) 
@@ -313,6 +311,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/address/billing','put', data=data)
 
+    @strict_types
     def update_shipping_address(self, invoice_id:str, data:AddressData):
         """Updates the shipping address for this invoice alone.
 
@@ -336,7 +335,6 @@ class Invoice:
 
         return self.base.api._standard_call(f'{self.module}/templates','get')
 
-
     def update_template(self, invoice_id:str, template_id:str):
         """Update the pdf template associated with the invoice.
 
@@ -350,8 +348,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/templates/{template_id}','put')
 
-
-    def get_invoice_payments(self,invoice_id):
+    def get_invoice_payments(self,invoice_id:str):
         """Get the list of payments made for an invoice.
 
         Args:
@@ -363,7 +360,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/payments','get')
 
-    def get_credits_applied(self,invoice_id):
+    def get_credits_applied(self,invoice_id:str):
         """Get the list of credits applied for an invoice.
 
         Args:
@@ -458,7 +455,7 @@ class Invoice:
         
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','put',can_send_in_email=can_send_in_email)
 
-    def get_invoice_attachment(self, invoice_id, preview:bytes=None):
+    def get_invoice_attachment(self, invoice_id:str, preview:bytes=None):
         """Returns the file attached to the invoice.
 
         Args:
@@ -493,15 +490,14 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/expenses/{expense_id}/receipt','delete')
         
-
-    def add_comments( self, invoice_id:str, description:str, payment_expected_date:Date, show_comments_to_clients:bool=None):
+    def add_comments( self, invoice_id:str, description:str, payment_expected_date:str, show_comments_to_clients:bool=None):
 
         """Add a comment for an invoice.
 
         Args:
             invoice_id(str)
             description(str)
-            payment_expected_date(Date) 
+            payment_expected_date(str): Format [yyyy-mm-dd]status.
             show_comments_to_clients(bool): Boolean to check if the comment to be shown to the clients
            
 
@@ -511,7 +507,6 @@ class Invoice:
 
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/comments','post',description= description,payment_expected_date=payment_expected_date,\
              show_comments_to_clients=show_comments_to_clients) 
-
 
     def get_history_and_comments( self, invoice_id:str):
         """Get the complete history and comments of an invoice.
@@ -525,7 +520,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/comments','get')
 
-    def update_comment(self, invoice_id:str, comment_id:str, description:str, show_comments_to_clients:bool)=None:
+    def update_comment(self, invoice_id:str, comment_id:str, description:str, show_comments_to_clients:bool=None):
         """Update an existing comment of an invoice.
 
         Args:

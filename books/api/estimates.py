@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from xmlrpc.client import boolean
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
@@ -25,16 +24,34 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}', 'post', data=data, send= send, ignore_auto_number_generation= ignore_auto_number_generation)
     
-    def get_all(self, page:int=1):
+    def get_all(self, page:int=1,estimate_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
+         item_name:str=None, item_description:str=None, custom_field:str=None, expiry_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None):
         """List all estimates with pagination.
 
         Args:
             page (int, optional): Defaults to 1.
+            estimate_number(str):Search estimates by estimate number.Variantsestimate_number_startswith and estimate_number_contains
+            reference_number(str):Search estimates by reference number.Variants reference_number_startswith and reference_number_contains
+            customer_name(str): Search estimates by customer name.Variants customer_name_startswith and customer_name_contains
+            total(str): arch estimates by estimate total.Variants total_less_than, total_less_equals, total_greater_than and total_greater_equals
+            customer_id(str): Search estimates by customer id..
+            item_id(str): ID of the item.
+            status(str): Search estimates by status.Allowed Valuesdraft, sent, invoiced , accepted, declined and expired
+            item_name(str): Search estimates by item name.Variants item_name_starts with and item_name_contains
+            item_description(str):Search estimates by item description.Variants item_description_startswith and item_description_contains
+            custom_field(str):Search estimates by custom field.Variants custom_field_startswith and custom_field_contains
+            expiry_date(str):The date of expiration of the estimates
+            date(str):Search estimates by estimate date.Variants date_start, date_end, date_before and date_after.
+            filter_by(str): Filter estimates by status.Allowed Values Status.All, Status.Sent, Status.Draft, Status.Invoiced, Status.Accepted, Status.Declined and Status.Expired
+            search_text(str): Search estimates by estimate number or reference or customer name.
+            sort_column(str): Sort estimates. Allowed Values customer_name, estimate_number, date, total and created_time
 
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}', 'get', page=page)
+        return self.base.api._standard_call(f'{self.module}', 'get', page=page, estim=estimate_number, refe=reference_number, customer_name=customer_name,tota=total, customer_id=customer_id,\
+            item_id=item_id,status=status, item_name=item_name, item_description=item_description, custom_field=custom_field, expiry_date=expiry_date, date=date, filter_by=filter_by,search_text=search_text,\
+                sort_column=sort_column)
     
     @strict_types
     def update(self, estimate_id: str, data:SOData,ignore_auto_number_generation:bool=None):
@@ -224,7 +241,8 @@ class Estimates:
             Response
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/address/billing','put', data=data)
-
+   
+    @strict_types
     def update_shipping_address(self, estimate_id:str, data:AddressData):
         """Updates the shipping address for an existing estimate alone.
 

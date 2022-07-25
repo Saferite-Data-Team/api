@@ -1,9 +1,6 @@
 from dataclasses import dataclass
-import enum
-from operator import inv
-from xmlrpc.client import boolean
 from saferite.core import ZohoBooksBase, strict_types
-from books.data import SOData, AddressData
+from books.data import SOData
 
 
 @dataclass
@@ -14,6 +11,7 @@ class CreditsNotes:
         self.base = ZohoBooksBase(self.token,self.organization_id)
         self.module: str = "creditnotes"
 
+    @strict_types
     def create(self,data, invoice_id:str=None, ignore_auto_number_generation:bool=None):
         """Create a Credit
 
@@ -25,10 +23,31 @@ class CreditsNotes:
         return self.base.api._standard_call(f'{self.module}', 'post', data=data, ignore_auto_number_generation=ignore_auto_number_generation,\
             invoice_id=invoice_id ) 
             
-    def get_all(self):
-        """_List all the Credit Notes.
-        """
+    def get_all(self, creditnote_number:str=None, date:str=None, status:str=None, total:str=None, reference_numnber:str=None, customer_name:str=None, item_name:str=None,\
+        customer_id:str=None,item_drescription:str=None, item_id:str=None, line_item_id:str=None, tax_id:str=None, filter_by:str=None, search_text:str=None, sort_column:str=None):
+        """_summary_
 
+        Args:
+            creditnote_number (str): Unique number generated (starts with CN) which will be displayed in the interface and credit notes. Max-Length [100].
+            date (str):The date on which credit note is raised. Format [yyyy-mm-dd]status
+            status (str: Status of the credit note. This can be "open", "closed" or "void".
+            total (str): Total credits raised in this credit note.
+            reference_numnber (str): Reference number generated for the payment. A string of your choice can also be used as the reference number. Max-Length [100]
+            customer_name (str): Name of the customer to whom the credit note is raised. Max-Length [100]
+            item_name (str): Search credit notes by item name.Max_lenght [100]
+            customer_id(str):Customer ID of the customer for whom the credit note is raised.
+            item_drescription (str):description for the item. Max-length [100]
+            item_id (str):Unique string generated for the item to which a refund is to be made.
+            line_item_id (str):Search credit notes by credit note line item id.
+            tax_id (str): Unique to denote the tax associate to the creditnote
+            filter_by (str): Filter credit notes by statuses. Allowed values "Status.All", "Status.Open", "Status.Draft", "Status.Closed", "Status.Void".
+            search_text (str): Search credit notes by credit note number or customer name or credit note reference number. Max-length [100]
+            sort_column (str): Sort credit notes by following columns customer_name, creditnote_number, balance, total, date and created_time. Allowed Values "customer_name","creditnote_number", "balance total", "date and created_time"
+        """
+        return self.base.api._standard_call(f'{self.module}','get',creditnote_number=creditnote_number, date=date, status=status, total=total, reference_numnber=reference_numnber, customer_name=customer_name,\
+         item_name=item_name, customer_id=customer_id, item_drescription=item_drescription, item_id=item_id, line_item_id=line_item_id, tax_id=tax_id, filter_by=filter_by,search_text=search_text,sort_column=sort_column)
+
+    @strict_types
     def update(self, creditnote_id:str, data:SOData,ignore_auto_number_generation:bool=None):
         """Update a Credit Note 
 
@@ -138,6 +157,7 @@ class CreditsNotes:
         """
         return self.base.api._standard_call(f'{self.module}/{creditnote_id}/emailhistory', 'get')
 
+    @strict_types
     def update_billing_address(self,creditnote_id:str, data:dict):
         """Updates the billing address for an existing credit note alone.
 
@@ -154,6 +174,7 @@ class CreditsNotes:
         """
         return self.base.api._standard_call(f'{self.module}/{creditnote_id}/address/billing','put')
 
+    @strict_types
     def update_shipping_address(self, creditnote_id:str, data:dict):
         """Updates the shipping address for an existing credit note alone.
 
@@ -315,8 +336,6 @@ class CreditsNotes:
             creditnote_refund_id(str)
         """
         return self.base.api._standard_call(f'{self.module}/{creditnote_id}/refunds/{creditnote_refund_id}','get')
-
-
 
     def delete_creditnote_refund( self, creditnote_id:str, creditnote_refund_id:str):
         """Delete a credit note refund.
