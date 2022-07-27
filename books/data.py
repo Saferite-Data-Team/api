@@ -249,7 +249,7 @@ class SOData(Data):
     is_discount_before_tax: bool = None
     recurring_invoice_id: str = None
     invoice_estimate_id: str = None
-    allow_partial_payments: boolean = None
+    allow_partial_payments: bool = None
     estimate_number:str= None
     expiry_date: str= None
     reason: str = None
