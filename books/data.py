@@ -1,6 +1,4 @@
 from dataclasses import dataclass, field, fields
-from tokenize import Double
-from xmlrpc.client import boolean
 from saferite.core import Data
 
 @dataclass
@@ -323,7 +321,7 @@ class AddressData(Data):
         zip: str
         country: str
         street2:str = None
-        phone: str = None
+        phone: str = Nones
         fax: str = None
         attention: str = None
         is_one_off_address: bool = None

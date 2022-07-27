@@ -19,8 +19,8 @@ class Contacts:
         return self.base.api._standard_call(self.module, 'get', page=page)
     
     @strict_types
-    def update(self, data:ContactData):
-        return self.base.api._standard_call(self.module, 'put', data=str(data.json))
+    def update(self, contact_id:str, data:ContactData):
+        return self.base.api._standard_call(f'{self.module}/{contact_id}', 'put', data=str(data.json))
     
     def get_by_id(self, contact_id:str):
         return self.base.api._standard_call(f'{self.module}/{contact_id}', 'get')
