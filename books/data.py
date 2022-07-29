@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field, fields
+
+from numpy import ones
 from saferite.core import Data
 
 @dataclass
@@ -124,6 +126,27 @@ class SOLineItems(Data):
 
 
 @dataclass
+class TaxData(Data):
+
+
+    tax_name: str 
+    tax_percentage: str 
+    tax_type: str = None
+    tax_authority_name: str = None
+    tax_authority_id: str = None
+    country_code: str = None
+    is_valued_added: bool = None
+    update_recurring_invoice: bool = None
+    update_recurring_expense: bool = None
+    update_draft_invoice: bool = None
+    update_recurring_bills: bool = None
+    update_draft_so: bool = None
+    update_subscription: bool = None
+    update_project: bool = None
+    is_editable: bool = None
+
+
+@dataclass
 class SOData(Data):
     """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
 
@@ -132,7 +155,7 @@ class SOData(Data):
     customer_id: str (required)
     date: str (required)
     line_items: SOLineItems (required)
-    _so_channel: str (required)
+    _so_channel: str (required)   
     contact_persons: list 
     shipment_date: str (only SO)
     custom_fields: list 
@@ -262,7 +285,12 @@ class SOData(Data):
     purchaseorder_number: str= None
     ship_via: str = None
     delivery_org_address_id: str = None
+  
+  
+  
+  
 
+    
 
 
     def __post_init__(self):
@@ -300,8 +328,13 @@ class SOData(Data):
             'INV': {
             '_so_channel': '1729377000880233358',
             '_dropship_po': '1729377001216648914'
-            }
+            },
+            'EST': {
+            '_so_channel': '1729377001340068453',
+            '_dropship_po': ''
 
+            }
+           
         }
 
         for field in custom_data:
