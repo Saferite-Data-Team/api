@@ -118,6 +118,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/status/draft', 'post')
 
+    @strict_types
     def send_email(self, invoice_id:str, data:dict, attachments:bytes=None, send_customer_statement:bool=None, send_attachments:bool=None):
         """Email an invoice to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
         Args:
@@ -201,6 +202,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/email','get')
     
+    @strict_types
     def remind_customer( self, invoice_id:str, data:dict, send_customer_statement:bool=None, attachments:bytes=None):
         """Remind your customer about an unpaid invoice by email. Reminder will be sent, only for the invoices which are in open or overdue status.
 
@@ -444,7 +446,8 @@ class Invoice:
             Response
         """
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/creditsapplied/{creditnotes_invoice_id}','delete')
-        
+
+    @strict_types   
     def add_attachment( self, invoice_id:str, can_send_in_email:bool=None, attchment:bytes=None) :
 
         """Attach a file to an invoice.
@@ -476,6 +479,7 @@ class Invoice:
         
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','put',can_send_in_email=can_send_in_email)
 
+    @strict_types
     def get_invoice_attachment(self, invoice_id:str, preview:bytes=None):
         """Returns the file attached to the invoice.
 

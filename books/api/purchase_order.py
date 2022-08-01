@@ -144,6 +144,7 @@ class PurchaseOrder:
         """
         return self.base.api._standard_call(f'{self.module}/{purchaseorder_id}/approve', 'post')
 
+    @strict_types
     def send_email(self, purchaseorder_id:str, data:dict, attachments:bytes=None, send_attachment:bool=None, file_name:str=None):
         """Email a purchase order to the vendor.
 
@@ -261,6 +262,7 @@ class PurchaseOrder:
         
         return self.base.api._standard_call(f'{self.module}/{purchaseorder_id}/attachment','put',can_send_in_email=can_send_in_email)
     
+    @strict_types
     def get_purchaseorder_attachment(self, purchaseorder_id:str, preview:bytes=None):
         """Returns the file attached to the purchase order.
 

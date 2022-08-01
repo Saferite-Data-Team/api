@@ -11,7 +11,7 @@ class Taxes:
     def __post_init__(self):
         self.base = ZohoBooksBase(self.token, self.organization_id)
         self.module  = "settings"
-
+    @strict_types
     def create( self, data:TaxData):
         """Create a tax which can be associated with an item.
 
@@ -19,7 +19,6 @@ class Taxes:
             data (TaxData)
         """
         return self.base.api._standard_call(f'{self.module}/taxes', 'post', data=data)
-
 
     def get_all(self, page=1):
         """List of simple and compound taxes with pagination.
@@ -29,7 +28,7 @@ class Taxes:
         """
         return self.base.api._standard_call(f'{self.module}/taxes', 'get', page=page)
 
-
+    @strict_types
     def update (self, tax_id:str, data:TaxData):
         """Update the details of a simple or compound tax.
 
@@ -58,6 +57,7 @@ class Taxes:
         """
         return self.base.api._standard_call(f'{self.module}/taxes/{tax_id}', 'delete')
 
+    @strict_types
     def update_tax_group(self, tax_group_id:str, data:dict):
         """Update the details of the tax group.
 
@@ -78,6 +78,7 @@ class Taxes:
         """
         return self.base.api._standard_call(f'{self.module}/taxgroups/{tax_group_id}','get')
 
+    @strict_types
     def create_tax_group(self, data:dict):
         """Create a tax group associating multiple taxes.
 
@@ -97,6 +98,7 @@ class Taxes:
         """
         return self.base.api._standard_call(f'{self.module}/taxgroups/:{tax_group_id}', 'delete')
 
+    @strict_types
     def create_tax_authority(self, data:dict):
         """Create a tax authority.
 
@@ -114,6 +116,7 @@ class Taxes:
         """ 
         return self.base.api._standard_call(f'{self.module}/taxauthorities', 'get')
 
+    @strict_types
     def update_tax_authority(self, tax_authority_id:str, data:dict):
         """Update the details of a tax authority.
 
@@ -142,6 +145,7 @@ class Taxes:
         """
         return self.base.api._standard_call(f'{self.module}/taxauthorities/{tax_authority_id}', 'delete')
 
+    @strict_types
     def create_tax_exemptio(self, data:dict):
         """Create a tax exemption.
 
@@ -159,6 +163,7 @@ class Taxes:
         """ 
         return self.base.api._standard_call(f'{self.module}/taxexemptions', 'get')
     
+    @strict_types
     def update_tax_exemption(self, tax_exemption_id:str, data:dict):
         """Update the details of a tax exemption.
 
@@ -170,8 +175,7 @@ class Taxes:
             }
         """
         return self.base.api._standard_call(f'{self.module}/taxexemptions/{tax_exemption_id}', 'put', data=data)
-
-    
+   
     def get_tax_exemption(self, tax_exemption_id:str):
         """Get the details of a tax exemption..
 

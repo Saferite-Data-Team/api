@@ -81,6 +81,26 @@ class Data:
             value = getattr(self,date)
             if value is not None:
                 datetime.strptime(value, date_format)
+    
+    @classmethod
+    def from_dataframe(cls, df, field_name:str, field_value:str, repeated:bool = False, **kwargs):
+        additional_data = locals()['kwargs']
+
+        class_columns = set(cls.__match_args__) if cls.__match_args__ != () else set(cls.fields())
+        df_columns = set(df.columns)
+        columns = list(df_columns.intersection(class_columns))
+
+        data = df.loc[df[field_name] == field_value, columns].to_dict('records')
+
+        for value in data:
+            value.update(additional_data)
+        
+        if repeated:
+            ins = cls()
+            for value in data:
+                ins(**value)
+            return ins
+        return cls(**data[0])
 
 #From StackOverflow answer by @Ilya_Peterov
 from typing import get_type_hints

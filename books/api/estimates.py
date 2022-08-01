@@ -151,7 +151,7 @@ class Estimates:
 
         """
         return self.base.api._standard_call(f'{self.module}/{estimate_id}/approve', 'post')
-
+    @strict_types
     def send_email(self, estimate_id:str, data:dict, attachments:bytes=None):
         """Email an estimate to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
 

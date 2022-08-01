@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field, fields
+from tkinter import N
 
 from numpy import ones
 from saferite.core import Data
@@ -38,62 +39,34 @@ class ItemData(Data):
         if self.is_taxable is not None and not self.is_taxable and self.tax_exemption_id is None:
             raise TypeError('tax_exemption_id is required when is_taxable is False')
 
+
 @dataclass
 class SOLineItems(Data):
-    item_id: str
-    rate: float
-    quantity: int
-    bcy_rate:float = None
-    line_item_id: str = None
-    item_order: str = None
-    name: str = None
-    description: str = None
-    product_type: str = None
-    warehouse_id: str = None #Replace with Miami Warehouse ID
-    discount: str = None
-    discount_amount:float = None
-    tax_id: str = None
-    tags: list = None
-    unit: str = None
-    item_custom_fields: list = None #Replace with actual custom fields
-    tax_name: str = None
-    tax_type: str = None
-    tax_percentage: str = None
-    tax_treatment_code: str = None
-    header_name: str = None
-    tax_exemption_id: str = None
-    tax_exemption_code: str = None
-    avatax_exempt_no: str = None
-    avatax_use_code: str = None
-    project_id: str = None
-    data: list = field(default_factory=list, init=False)
-    expense_id:str = None
-    expense_receipt_name: str = None
-    time_entry_ids:list =None
-    custom_body : str = None
-    custom_subject: str = None
-    notes: str = None
-    terms: str = None
-    shipping_charge: str = None
-    adjustment: float = None 
-    adjustment_description: str = None
-
-
+    _data_: list = field(default_factory=list, init=False)
+    
     def __call__(
         self,
-        item_id:str,
-        rate:float,
+        item_id: str,
+        rate: float,
         quantity: int,
+        bcy_rate:float = None,
+        line_item_id: str = None,
         item_order: str = None,
         name: str = None,
         description: str = None,
         product_type: str = None,
-        warehouse_id: str = None, #Replace with Miami Warehouse ID
+        warehouse_id: str = None,
         discount: str = None,
+        discount_amount:float = None,
         tax_id: str = None,
         tags: list = None,
         unit: str = None,
-        item_custom_fields: list = None, #Replace with actual custom fields
+        item_custom_fields: list = None,
+        tax_name: str = None,
+        tax_type: str = None,
+        tax_percentage: str = None,
+        tax_treatment_code: str = None,
+        header_name: str = None,
         tax_exemption_id: str = None,
         tax_exemption_code: str = None,
         avatax_exempt_no: str = None,
@@ -101,28 +74,62 @@ class SOLineItems(Data):
         project_id: str = None,
         expense_id:str = None,
         expense_receipt_name: str = None,
-        time_entry_ids:list =None
+        time_entry_ids:list = None,
+        custom_body : str = None,
+        custom_subject: str = None,
+        notes: str = None,
+        terms: str = None,
+        shipping_charge: str = None,
+        adjustment: float = None,
+        adjustment_description: str = None):
 
-    ):
         _data = {k:v for k, v in locals().items() if v is not None and k != "self"}
-        for k, v in _data.items():
-            _type = self.schema[k]
-            if not isinstance(v, _type):
-                raise ValueError(f'Expected {k} to be {_type}, 'f'got {type(v)}')
-        self.data.append(_data)
-
-    def __post_init__(self):
-        super().__post_init__()
-        _data = {k:v for k, v in self.__dict__.items() if v is not None and k != "data"}
-        self.data.append(_data)
-        
+        self._data_.append(_data)
+    
+    @staticmethod
+    def fields():
+        field_list = [
+            'item_id',
+            'rate',
+            'quantity',
+            'item_order',
+            'name',
+            'description',
+            'product_type',
+            'warehouse_id',
+            'discount',
+            'tax_id',
+            'tags',
+            'unit',
+            'item_custom_fields',
+            'tax_exemption_id',
+            'tax_exemption_code',
+            'avatax_exempt_no',
+            'avatax_use_code',
+            'project_id'
+        ]
+        return field_list
+    
     @property
-    def schema(self):
-        return {field.name: field.type for field in fields(self) if field.name != 'data'}
+    def required_fields(self):
+        field_list = [
+            'item_id',
+            'rate',
+            'quantity'
+        ]
+        return field_list
 
+    @property
+    def data(self):
+        if self._data_ == []:
+            raise ValueError('No data has been passed to the SOLineItems class')
+        return self._data_
+    
     @property
     def reset_data(self):
         self.data = []
+ 
+
 
 
 @dataclass
@@ -145,6 +152,33 @@ class TaxData(Data):
     update_project: bool = None
     is_editable: bool = None
 
+@dataclass
+class BillsData(Data):
+    bill_id: str
+    purchaseorder_ids: list
+    vendor_id: str
+    vendor_name: str = None
+    pricebook_id: str = None
+    pricebook_name: str = None
+    unused_credits_payable_amount: int = None
+    status: str = None
+    bill_number: str = None
+    date: str = None
+    due_date: str = None
+    payment_terms:str = None
+    payment_terms_label: str = None
+    payment_expected_date: str = None
+    reference_number: str = None
+    recurring_bill_id: str = None
+    due_by_days: int = None
+    currency_id: str = None
+    currency_code: str = None
+    currency_simbol: str = None
+    documents: list = None
+    price_precision: int = None
+    exchange_rate: float = None
+    adjustment: float = None
+    adjustment_description: str = None 
 
 @dataclass
 class SOData(Data):
@@ -288,11 +322,6 @@ class SOData(Data):
   
   
   
-  
-
-    
-
-
     def __post_init__(self):
         super().__post_init__()
         

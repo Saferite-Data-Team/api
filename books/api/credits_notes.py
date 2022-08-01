@@ -59,7 +59,7 @@ class CreditsNotes:
         """
         return self.base.api._standard_call(f'{self.module}/{creditnote_id}', 'put', data=data, ignore_auto_number_generation= ignore_auto_number_generation)
 
-    def get(self, creditnote_id:str, print:bool=None, accept:str=None):
+    def get_by_id(self, creditnote_id:str, print:bool=None, accept:str=None):
         """Get details of an existing creditnote.
 
         Args:
@@ -205,7 +205,7 @@ class CreditsNotes:
         """
         return self.base.api._standard_call(f'{self.module}/{creditnote_id}/templates/{template_id}','put')
 
-    def credit_to_an_invoice(self,creditnote_id:str, data:dict):
+    def apply_to_an_invoice(self,creditnote_id:str, data:dict):
         """Apply credit note to existing invoices.
 
         Args:
