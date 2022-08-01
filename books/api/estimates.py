@@ -54,7 +54,7 @@ class Estimates:
                 sort_column=sort_column)
     
     @strict_types
-    def update(self, estimate_id: str, data:SOData,ignore_auto_number_generation:bool=None):
+    def update(self, estimate_id: str, data:SOData, ignore_auto_number_generation:bool=None):
         """Update an existing estimate. To delete a line item just remove it from the line_items list.
 
         Args:
@@ -66,7 +66,7 @@ class Estimates:
             Response
 
         """
-        return self.base.api._standard_call(f'{self.module}/{estimate_id}', 'put', data=data,ignore_auto_number_generation= ignore_auto_number_generation)
+        return self.base.api._standard_call(f'{self.module}/{estimate_id}', 'put', data=str(data.json), ignore_auto_number_generation=ignore_auto_number_generation)
 
 
     def get_by_id(self, estimate_id: str):
