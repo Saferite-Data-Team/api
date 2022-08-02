@@ -7,6 +7,7 @@ from books.data import SOData
 class CreditsNotes:
     token:str
     organization_id:str
+
     def __post_init__(self):
         self.base = ZohoBooksBase(self.token,self.organization_id)
         self.module: str = "creditnotes"
