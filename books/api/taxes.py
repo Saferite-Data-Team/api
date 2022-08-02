@@ -18,7 +18,7 @@ class Taxes:
         Args:
             data (TaxData)
         """
-        return self.base.api._standard_call(f'{self.module}/taxes', 'post', data=data)
+        return self.base.api._standard_call(f'{self.module}/taxes', 'post', data= data.json)
 
     def get_all(self, page=1):
         """List of simple and compound taxes with pagination.
