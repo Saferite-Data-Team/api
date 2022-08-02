@@ -1,7 +1,4 @@
-from dataclasses import dataclass, field, fields
-from tkinter import N
-
-from numpy import ones
+from dataclasses import dataclass, field
 from saferite.core import Data
 
 @dataclass
@@ -154,6 +151,47 @@ class TaxData(Data):
 
 @dataclass
 class BillsData(Data):
+    """
+    purchaseorder_ids: [
+        460000000068231,
+        460000000068233
+    ]
+    documents(list)= [
+        {
+            "document_id": 0,
+            "file_name": "string"
+        }
+    ]
+    custom_fields(list) = [
+        {
+
+            "custom_field_id": 0,
+            "index": 0,
+            "value": "string",
+            "label": "string"
+                
+        }
+    ]
+     "purchaseorders"(list): [
+        {
+            "purchaseorder_id": "460000000068231",
+            "purchaseorder_number": "PO-0001",
+            "purchaseorder_date": "19 Jan 2017",
+            "purchaseorder_status": "billed"
+        }
+    ]
+    taxes(list) =  [
+        {
+            "tax_name": "VAT (12.5%)",
+            "tax_amount": 1.25
+        }
+    ]
+
+
+
+
+
+    """
     bill_id: str
     purchaseorder_ids: list
     vendor_id: str
@@ -179,6 +217,25 @@ class BillsData(Data):
     exchange_rate: float = None
     adjustment: float = None
     adjustment_description: str = None 
+    custom_fields: list = None
+    is_item_level_taxcalc: bool = None
+    line_items: SOLineItems = None
+    sub_total: int = None
+    tax_total: int = None
+    total: int = None
+    payment_made: int = None
+    vendor_credits_applied: int = None
+    is_line_item_invoice: bool = None
+    purchaseorder: list = None
+    taxes: list = None
+    balance: int = None
+    billing_addtress: AddressData = None
+    paymnets: list = None
+
+
+
+
+
 
 @dataclass
 class SOData(Data):
@@ -189,10 +246,13 @@ class SOData(Data):
     customer_id: str (required)
     date: str (required)
     line_items: SOLineItems (required)
-    _so_channel: str (required)   
-    contact_persons: list 
+    _so_channel: str (required)
+    contact_persons: list
     shipment_date: str (only SO)
-    custom_fields: list 
+    custom_fields: list = { 
+            'customfield_id' : 0,
+            'value': 'string'
+    }
     salesperson_id: str
     salesperson_name: str 
     merchant_id: str (only SO)
@@ -360,8 +420,6 @@ class SOData(Data):
             },
             'EST': {
             '_so_channel': '1729377001340068453',
-            '_dropship_po': ''
-
             }
            
         }
@@ -383,7 +441,7 @@ class AddressData(Data):
         zip: str
         country: str
         street2:str = None
-        phone: str = Nones
+        phone: str = None
         fax: str = None
         attention: str = None
         is_one_off_address: bool = None
