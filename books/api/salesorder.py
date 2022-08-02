@@ -48,7 +48,7 @@ class SalesOrder:
     def mark_as_void(self, order_id:str):
         return self.base.api._standard_call(f'{self.module}/{order_id}/status/void', 'post')
     
-    @strict_types
+    
     def send_email(self, order_id:str, data: dict):
         """Email a sales order to the customer. Input json string is not mandatory. If input json string is empty, mail will be send with default mail content.
 
