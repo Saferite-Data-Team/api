@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from saferite.core import ZohoBooksBase, strict_types
-from books.data import SOData, AddressData
+from books.data import ItemData, SOData, AddressData
 
 @dataclass
 class Invoice:
@@ -67,7 +67,9 @@ class Invoice:
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}', 'get', page=page)
+        return self.base.api._standard_call(f'{self.module}', 'get', page=page, invoice_number=invoice_number, reference_number=reference_number, customer_name=customer_name, total=total,\
+            customer_id=customer_id, item_id=item_id, status=status,item_name=item_name, item_description=item_description, custom_field=custom_field, due_date=due_date, datre=date, filter_by=filter_by,\
+                search_text=search_text, sort_column=sort_column, last_modified_time=last_modified_time, balance=balance, email=email, recurring_invoice_id=recurring_invoice_id)
     
     @strict_types
     def update(self, invoice_id: str, data:SOData):
@@ -448,21 +450,21 @@ class Invoice:
         return self.base.api._standard_call(f'{self.module}/{invoice_id}/creditsapplied/{creditnotes_invoice_id}','delete')
 
     @strict_types   
-    def add_attachment( self, invoice_id:str, can_send_in_email:bool=None, attchment:bytes=None) :
+    def add_attachment( self, invoice_id:str, can_send_in_email:bool=None, attachment:bytes=None) :
 
         """Attach a file to an invoice.
 
         Args:
             invoice_id(str)
             can_send_in_email(bool)
-            attchment(bytes) 
+            attachment(bytes) 
             
 
         Returns: 
             Response
         """
 
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','post', can_send_in_email=can_send_in_email, attchment=attchment)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/attachment','post', can_send_in_email=can_send_in_email, attachment=attachment)
 
     def update_attachment_preference(self,invoice_id:str, can_send_in_email:bool):
 

@@ -232,20 +232,20 @@ class PurchaseOrder:
         """
         return self.base.api._standard_call(f'{self.module}/{purchaseorder_id}/templates/{template_id}', 'get')
 
-    def add_attachment( self, purchaseorder_id:str, attchment:bytes=None) :
+    def add_attachment( self, purchaseorder_id:str, attachment:bytes=None) :
 
         """Attach a file to a purchase order.
 
         Args:
            purchaseorder_id(str)
-            attchment(bytes) 
+            attachment(bytes) 
             
 
         Returns: 
             Response
         """
 
-        return self.base.api._standard_call(f'{self.module}/{purchaseorder_id}/attachment','post', attchment=attchment)
+        return self.base.api._standard_call(f'{self.module}/{purchaseorder_id}/attachment','post', attachment=attachment)
    
     def update_attachment_preference(self,purchaseorder_id:str, can_send_in_email:bool):
 

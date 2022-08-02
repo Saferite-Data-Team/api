@@ -127,8 +127,6 @@ class SOLineItems(Data):
         self.data = []
  
 
-
-
 @dataclass
 class TaxData(Data):
 
@@ -149,93 +147,17 @@ class TaxData(Data):
     update_project: bool = None
     is_editable: bool = None
 
+    def __post_init__(self):
+        super().__post_init__()
+
+        TAX_TYPE = {
+            'tax',
+            'compound_tax'
+        }
+
+        self.enum_validation("tax_type", TAX_TYPE)
+
 @dataclass
-class BillsData(Data):
-    """
-    purchaseorder_ids: [
-        460000000068231,
-        460000000068233
-    ]
-    documents(list)= [
-        {
-            "document_id": 0,
-            "file_name": "string"
-        }
-    ]
-    custom_fields(list) = [
-        {
-
-            "custom_field_id": 0,
-            "index": 0,
-            "value": "string",
-            "label": "string"
-                
-        }
-    ]
-     "purchaseorders"(list): [
-        {
-            "purchaseorder_id": "460000000068231",
-            "purchaseorder_number": "PO-0001",
-            "purchaseorder_date": "19 Jan 2017",
-            "purchaseorder_status": "billed"
-        }
-    ]
-    taxes(list) =  [
-        {
-            "tax_name": "VAT (12.5%)",
-            "tax_amount": 1.25
-        }
-    ]
-
-
-
-
-
-    """
-    bill_id: str
-    purchaseorder_ids: list
-    vendor_id: str
-    vendor_name: str = None
-    pricebook_id: str = None
-    pricebook_name: str = None
-    unused_credits_payable_amount: int = None
-    status: str = None
-    bill_number: str = None
-    date: str = None
-    due_date: str = None
-    payment_terms:str = None
-    payment_terms_label: str = None
-    payment_expected_date: str = None
-    reference_number: str = None
-    recurring_bill_id: str = None
-    due_by_days: int = None
-    currency_id: str = None
-    currency_code: str = None
-    currency_simbol: str = None
-    documents: list = None
-    price_precision: int = None
-    exchange_rate: float = None
-    adjustment: float = None
-    adjustment_description: str = None 
-    custom_fields: list = None
-    is_item_level_taxcalc: bool = None
-    line_items: SOLineItems = None
-    sub_total: int = None
-    tax_total: int = None
-    total: int = None
-    payment_made: int = None
-    vendor_credits_applied: int = None
-    is_line_item_invoice: bool = None
-    purchaseorder: list = None
-    taxes: list = None
-    balance: int = None
-    billing_addtress: AddressData = None
-    paymnets: list = None
-
-
-
-
-
 
 @dataclass
 class SOData(Data):
@@ -402,10 +324,17 @@ class SOData(Data):
             'INV',
             'EST'
         }
+
+        DISCOUNT_TYPE = {
+            'entity level',
+            'item_level'
+        } 
+
         
         self.enum_validation("_so_channel", SO_CHANNELS)
         self.enum_validation("_transaction_type", TRANSACTION_TYPE)
-        self.date_validation(['date', 'shipment_date'], '%Y-%m-%d')
+        self.enum_validation("discount_type", DISCOUNT_TYPE)
+        self.date_validation(['date', 'shipment_date','expiry_date','delivery_date','due_date'], '%Y-%m-%d')
         self.line_items = self.line_items.data
         custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
 
@@ -478,7 +407,6 @@ class ContactPersonData(Data):
     is_primary_contact: bool = None
     enable_portal: bool = None
     
-
 @dataclass
 class DefaultTemplates(Data):
     invoice_template_id: str = None
@@ -498,7 +426,6 @@ class DefaultTemplates(Data):
     paymentthankyou_email_template_id: str = None
     retainerinvoice_paymentthankyou_email_template_id: str = None
   
-
 @dataclass
 class ContactData(Data):
     contact_name: str
@@ -539,6 +466,139 @@ class ContactData(Data):
         self.billing_address = self.billing_address.json
         self.shipping_address = self.shipping_address.json
     
-    
-    
+class BillsData(Data):
+    """
+    purchaseorder_ids: [
+        460000000068231,
+        460000000068233
+    ]
+    documents(list)= [
+        {
+            "document_id": 0,
+            "file_name": "string"
+        }
+    ]
+    custom_fields(list) = [
+        {
+
+            "custom_field_id": 0,
+            "index": 0,
+            "value": "string",
+            "label": "string"
+                
+        }
+    ]
+     "purchaseorders"(list): [
+        {
+            "purchaseorder_id": "460000000068231",
+            "purchaseorder_number": "PO-0001",
+            "purchaseorder_date": "19 Jan 2017",
+            "purchaseorder_status": "billed"
+        }
+    ]
+    taxes(list) =  [
+        {
+            "tax_name": "VAT (12.5%)",
+            "tax_amount": 1.25
+        }
+    ]
+    payments(list) = [
+        {
+            "payment_id": "460000000042059",
+            "bill_id": "460000000098765",
+            "bill_payment_id": "460000000042061",
+            "payment_mode": "Cash",
+            "payment_number": "string",
+            "description": "string",
+            "date": "2013-09-11",
+            "reference_number": "4321133",
+            "exchange_rate": 1.23,
+            "amount": 31.25,
+            "paid_through_account_id": "460000000000358",
+            "paid_through_account_name": "Undeposited Funds",
+            "is_single_bill_payment": true,
+            "is_paid_via_print_check": false,
+            "check_details": [
+                {
+                    "check_status": "string",
+                    "check_number": "string"
+                }
+            ],
+            "is_ach_payment": false,
+            "ach_payment_status": "string",
+            "ach_gw_transaction_id": "string",
+            "filed_in_vat_return_id": "string",
+            "filed_in_vat_return_name": "string",
+            "filed_in_vat_return_type": "string"
+        }
+    ]
+    vendor_credits(list) = [
+        {
+            "vendor_credit_id": "4600000053221",
+            "vendor_credit_bill_id": "4600000211221",
+            "vendor_credit_number": "DN-001",
+            "date": "27 Dec 2016",
+            "amount": 10
+        }
+    ]
+
+
+
+
+    """
+    bill_id: str
+    purchaseorder_ids: list
+    vendor_id: str
+    vendor_name: str = None
+    pricebook_id: str = None
+    pricebook_name: str = None
+    unused_credits_payable_amount: int = None
+    status: str = None
+    bill_number: str = None
+    date: str = None
+    due_date: str = None
+    payment_terms:str = None
+    payment_terms_label: str = None
+    payment_expected_date: str = None
+    reference_number: str = None
+    recurring_bill_id: str = None
+    due_by_days: int = None
+    currency_id: str = None
+    currency_code: str = None
+    currency_simbol: str = None
+    documents: list = None
+    price_precision: int = None
+    exchange_rate: float = None
+    adjustment: float = None
+    adjustment_description: str = None 
+    custom_fields: list = None
+    is_item_level_taxcalc: bool = None
+    line_items: SOLineItems = None
+    sub_total: int = None
+    tax_total: int = None
+    total: int = None
+    payment_made: int = None
+    vendor_credits_applied: int = None
+    is_line_item_invoice: bool = None
+    purchaseorder: list = None
+    taxes: list = None
+    balance: int = None
+    billing_address: AddressData = None
+    paymnets: list = None
+    vendor_credits: list = None
+    created_time: str = None
+    created_by_id: str = None
+    last_modified_time: str = None
+    reference_id: str = None
+    notes: str = None
+    attachment_name: str = None
+    open_purchaseorder_count: int = None
+
+    def __post_init__(self):
+        super().__post_init__()
+
+
+        self.date_validation(['date','due_date','payment_expected_date', 'created_time'], '%Y-%m-%d')
+
+
     
