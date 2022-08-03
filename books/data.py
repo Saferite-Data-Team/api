@@ -324,7 +324,7 @@ class SOData(Data):
             'INV',
             'EST'
         }
-
+        
         DISCOUNT_TYPE = {
             'entity level',
             'item_level'
@@ -544,7 +544,7 @@ class BillsData(Data):
 
 
 
-
+    
     """
     bill_id: str
     purchaseorder_ids: list
@@ -601,4 +601,3 @@ class BillsData(Data):
         self.date_validation(['date','due_date','payment_expected_date', 'created_time'], '%Y-%m-%d')
 
 
-    

@@ -36,7 +36,7 @@ class Taxes:
             data (TaxData)
             tax_id(str)
         """
-        return self.base.api._standard_call(f'{self.module}/taxes{tax_id}', 'put', data=str(data))
+        return self.base.api._standard_call(f'{self.module}/taxes{tax_id}', 'put', data=str(data.json))
 
     def get_by_id(self, tax_id:str):
         """Get the details of a simple or compound tax.

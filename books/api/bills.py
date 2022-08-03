@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from distutils.log import error
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import BillsData
 
