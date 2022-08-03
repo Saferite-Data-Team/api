@@ -125,7 +125,7 @@ class SOLineItems(Data):
     @property
     def reset_data(self):
         self.data = []
- 
+
 
 @dataclass
 class TaxData(Data):
@@ -465,7 +465,8 @@ class ContactData(Data):
         super().__post_init__()
         self.billing_address = self.billing_address.json
         self.shipping_address = self.shipping_address.json
-    
+
+@dataclass   
 class BillsData(Data):
     """
     purchaseorder_ids: [

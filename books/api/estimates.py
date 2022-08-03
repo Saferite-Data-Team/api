@@ -24,8 +24,9 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}', 'post', data=data.json, send= send, ignore_auto_number_generation= ignore_auto_number_generation)
     
+
     def get_all(self, page:int=1,estimate_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
-         item_name:str=None, item_description:str=None, custom_field:str=None, expiry_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None):
+         item_name:str=None, item_description:str=None, custom_field:str=None, expiry_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, **kwargs):
         """List all estimates with pagination.
 
         Args:
@@ -51,7 +52,8 @@ class Estimates:
         """
         return self.base.api._standard_call(f'{self.module}', 'get', page=page, estimate_number=estimate_number, reference_name=reference_number, customer_name=customer_name,total=total, customer_id=customer_id,\
             item_id=item_id,status=status, item_name=item_name, item_description=item_description, custom_field=custom_field, expiry_date=expiry_date, date=date, filter_by=filter_by,search_text=search_text,\
-                sort_column=sort_column)
+                sort_column=sort_column, **kwargs )
+       
     
     @strict_types
     def update(self, estimate_id: str, data:SOData, ignore_auto_number_generation:bool=None):
