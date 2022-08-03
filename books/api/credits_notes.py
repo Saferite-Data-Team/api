@@ -173,7 +173,7 @@ class CreditsNotes:
                 "fax": "+1-925-924-9600"
             }
         """
-        return self.base.api._standard_call(f'{self.module}/{creditnote_id}/address/billing','put')
+        return self.base.api._standard_call(f'{self.module}/{creditnote_id}/address/billing','put', data=str(data))
 
     @strict_types
     def update_shipping_address(self, creditnote_id:str, data:dict):
