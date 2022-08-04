@@ -246,9 +246,9 @@ class SOData(Data):
     date: str
     line_items: SOLineItems
     _so_channel: str
+    custom_fields: list = field(default_factory=list, init=False)
     contact_persons: list = None
     shipment_date: str = None
-    custom_fields: list = field(default_factory=list, init=False)
     salesperson_id: str = None
     salesperson_name: str = None
     merchant_id: str = None
