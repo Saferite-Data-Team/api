@@ -69,6 +69,7 @@ class SOLineItems(Data):
         avatax_exempt_no: str = None,
         avatax_use_code: str = None,
         project_id: str = None,
+        project_name: str = None,
         expense_id:str = None,
         expense_receipt_name: str = None,
         time_entry_ids:list = None,
@@ -78,7 +79,19 @@ class SOLineItems(Data):
         terms: str = None,
         shipping_charge: str = None,
         adjustment: float = None,
-        adjustment_description: str = None):
+        adjustment_description: str = None,
+        purchaseorder_item_id: str = None,
+        sku: str = None,
+        account_id: str = None,
+        account_name: str = None,
+        item_total: int = None,
+        item_total_inclusive_of_tax: float = None,
+        is_billable: bool = None,
+        customer_id: str = None,
+        customer_name: str = None,
+        invoice_id: str = None,
+        invoice_number: str = None,
+       ):
 
         _data = {k:v for k, v in locals().items() if v is not None and k != "self"}
         self._data_.append(_data)
