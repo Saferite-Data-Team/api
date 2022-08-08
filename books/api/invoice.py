@@ -39,7 +39,7 @@ class Invoice:
 
     def get_all(self, page:int=1, invoice_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
             item_name:str=None, item_description:str=None, custom_field:str=None, due_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, last_modified_time:str=None, balance:str = None, \
-                email:str=None, recurring_invoice_id:str=None, ):
+                email:str=None, recurring_invoice_id:str=None,**kwargs ):
         """_summary_
 
         Args:
@@ -69,7 +69,7 @@ class Invoice:
         """
         return self.base.api._standard_call(f'{self.module}', 'get', page=page, invoice_number=invoice_number, reference_number=reference_number, customer_name=customer_name, total=total,\
             customer_id=customer_id, item_id=item_id, status=status,item_name=item_name, item_description=item_description, custom_field=custom_field, due_date=due_date, datre=date, filter_by=filter_by,\
-                search_text=search_text, sort_column=sort_column, last_modified_time=last_modified_time, balance=balance, email=email, recurring_invoice_id=recurring_invoice_id)
+                search_text=search_text, sort_column=sort_column, last_modified_time=last_modified_time, balance=balance, email=email, recurring_invoice_id=recurring_invoice_id, ** kwargs)
     
     @strict_types
     def update(self, invoice_id: str, data:SOData):

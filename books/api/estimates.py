@@ -25,7 +25,7 @@ class Estimates:
         return self.base.api._standard_call(f'{self.module}', 'post', data=data.json, send= send, ignore_auto_number_generation= ignore_auto_number_generation)
     
 
-    def get_all(self, page:int=1,estimate_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
+    def get_all(self, page:int=1, estimate_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
          item_name:str=None, item_description:str=None, custom_field:str=None, expiry_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, **kwargs):
         """List all estimates with pagination.
 

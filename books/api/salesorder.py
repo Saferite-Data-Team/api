@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from re import search
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
@@ -28,15 +29,21 @@ class SalesOrder:
         """Create a sales order for your customer.
 
         Args:
-            data (dict): customer_id is required
+            data (SOData): customer_id is required
 
         Returns:
             Response
         """
         return self.base.api._standard_call(self.module, 'post', data=str(data.json))
     
-    def get_all(self, page: int=1):
-        return self.base.api._standard_call(self.module, 'get', page=page)
+    def get_all(self, page: int=1, salesorder_number:str= None, shipment_date:str= None, customer_name:str=None, total:str=None, customer_id:str=None, salesperson_id: str = None,\
+         salesorders_ids:str= None, last_modified_time: str = None, customview_id: str = None, item_id:str=None,status:str=None,item_name:str=None, item_description:str=None,\
+             date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, reference_number: str=None,**kwargs):
+        
+        
+        return self.base.api._standard_call(self.module, 'get', page=page, sort_column=sort_column, search_text=search_text, filter_by=filter_by, salesorder_number=salesorder_number, item_name=item_name, item_id=item_id,\
+             item_description=item_description, reference_nunber=reference_number, customer_name=customer_name, total=total, date=date, shipment_date=shipment_date, status=status,\
+              customer_id=customer_id, salesperson_id=salesperson_id, salesorder_ids=salesorders_ids,last_modified_time=last_modified_time, customview_id=customview_id, **kwargs)
     
     @strict_types
     def update(self, order_id:str, data:SOData):
