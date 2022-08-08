@@ -69,6 +69,7 @@ class SOLineItems(Data):
         avatax_exempt_no: str = None,
         avatax_use_code: str = None,
         project_id: str = None,
+        project_name: str = None,
         expense_id:str = None,
         expense_receipt_name: str = None,
         time_entry_ids:list = None,
@@ -78,7 +79,19 @@ class SOLineItems(Data):
         terms: str = None,
         shipping_charge: str = None,
         adjustment: float = None,
-        adjustment_description: str = None):
+        adjustment_description: str = None,
+        purchaseorder_item_id: str = None,
+        sku: str = None,
+        account_id: str = None,
+        account_name: str = None,
+        item_total: int = None,
+        item_total_inclusive_of_tax: float = None,
+        is_billable: bool = None,
+        customer_id: str = None,
+        customer_name: str = None,
+        invoice_id: str = None,
+        invoice_number: str = None,
+       ):
 
         _data = {k:v for k, v in locals().items() if v is not None and k != "self"}
         self._data_.append(_data)
@@ -125,7 +138,7 @@ class SOLineItems(Data):
     @property
     def reset_data(self):
         self.data = []
- 
+
 
 @dataclass
 class TaxData(Data):
@@ -164,7 +177,7 @@ class SOData(Data):
     """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
 
     Args:
-    _transaction_type: str (required)
+    _transaction_type: str (required). Allowed Values: 'SO-', 'INV', 'SQ-'.
     customer_id: str (required)
     date: str (required)
     line_items: SOLineItems (required)
@@ -320,9 +333,9 @@ class SOData(Data):
         }
 
         TRANSACTION_TYPE = {
-            'SO',
+            'SO-',
             'INV',
-            'EST'
+            'SQ-'
         }
         
         DISCOUNT_TYPE = {
@@ -339,7 +352,7 @@ class SOData(Data):
         custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
 
         custom_ids = {
-            'SO': {
+            'SO-': {
             '_so_channel': '1729377000039969865',
             '_dropship_po': '1729377001216648872'
             },
@@ -347,7 +360,7 @@ class SOData(Data):
             '_so_channel': '1729377000880233358',
             '_dropship_po': '1729377001216648914'
             },
-            'EST': {
+            'SQ-': {
             '_so_channel': '1729377001340068453',
             }
            
@@ -465,7 +478,8 @@ class ContactData(Data):
         super().__post_init__()
         self.billing_address = self.billing_address.json
         self.shipping_address = self.shipping_address.json
-    
+
+@dataclass   
 class BillsData(Data):
     """
     purchaseorder_ids: [
