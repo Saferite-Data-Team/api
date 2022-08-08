@@ -124,7 +124,7 @@ class SalesOrder:
                 "is_verified": true
             }
         """
-        return self.base.api._standard_call(f'{self.module}/{order_id}/address/shipping', 'put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{order_id}/address/shipping', 'put', data= str(data.json))
 
     def template_list(self):
         """Get all sales order templates ids

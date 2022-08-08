@@ -83,7 +83,7 @@ class Invoice:
             Response
 
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}', 'put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}', 'put', data= str(data.json))
      
     def delete(self, invoice_id:str):
         """Delete an existing invoice. Invoices which have payment or credits note applied cannot be deleted.
@@ -148,7 +148,7 @@ class Invoice:
             Response
 
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/email', 'post', data=data, attachments = attachments,send_customer_statement=send_customer_statement,send_attachments=send_attachments)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/email', 'post', data= str(data.json), attachments = attachments,send_customer_statement=send_customer_statement,send_attachments=send_attachments)
 
     def email_multiples(self, invoices_ids:str, data:dict):
         """Send invoices to your customers by email. Maximum of 10 invoices can be sent at once.
@@ -227,7 +227,7 @@ class Invoice:
             Response
         
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/paymentreminder','post',data=data, send_customer_statement=send_customer_statement,attachments=attachments)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/paymentreminder','post',data= str(data.json), send_customer_statement=send_customer_statement,attachments=attachments)
 
     def get_payment_reminder(self, invoice_id:str):
         """Get the mail content of the payment reminder.
@@ -348,7 +348,7 @@ class Invoice:
         Returns: 
             Response
         """
-        return self.base.api._standard_call(f'{self.module}/{invoice_id}/address/shipping','put', data=data)
+        return self.base.api._standard_call(f'{self.module}/{invoice_id}/address/shipping','put', data=str(data.json))
 
     def get_all_templates(self):
 

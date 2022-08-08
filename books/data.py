@@ -177,7 +177,7 @@ class SOData(Data):
     """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
 
     Args:
-    _transaction_type: str (required)
+    _transaction_type: str (required). Allowed Values: 'SO-', 'INV', 'SQ-'.
     customer_id: str (required)
     date: str (required)
     line_items: SOLineItems (required)
@@ -333,9 +333,9 @@ class SOData(Data):
         }
 
         TRANSACTION_TYPE = {
-            'SO',
+            'SO-',
             'INV',
-            'EST'
+            'SQ-'
         }
         
         DISCOUNT_TYPE = {
@@ -352,7 +352,7 @@ class SOData(Data):
         custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
 
         custom_ids = {
-            'SO': {
+            'SO-': {
             '_so_channel': '1729377000039969865',
             '_dropship_po': '1729377001216648872'
             },
@@ -360,7 +360,7 @@ class SOData(Data):
             '_so_channel': '1729377000880233358',
             '_dropship_po': '1729377001216648914'
             },
-            'EST': {
+            'SQ-': {
             '_so_channel': '1729377001340068453',
             }
            
