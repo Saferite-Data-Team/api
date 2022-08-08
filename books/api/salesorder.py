@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from re import search
 from saferite.core import ZohoBooksBase, strict_types
 from books.data import SOData, AddressData
 
