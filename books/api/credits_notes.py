@@ -24,7 +24,7 @@ class CreditsNotes:
         return self.base.api._standard_call(f'{self.module}', 'post', data=data, ignore_auto_number_generation=ignore_auto_number_generation,\
             invoice_id=invoice_id ) 
             
-    def get_all(self,pages = 1, creditnote_number:str=None, date:str=None, status:str=None, total:str=None, reference_numnber:str=None, customer_name:str=None, item_name:str=None,\
+    def get_all(self,page = 1, creditnote_number:str=None, date:str=None, status:str=None, total:str=None, reference_numnber:str=None, customer_name:str=None, item_name:str=None,\
         customer_id:str=None,item_drescription:str=None, item_id:str=None, line_item_id:str=None, tax_id:str=None, filter_by:str=None, search_text:str=None, sort_column:str=None):
         """_summary_
 
@@ -45,7 +45,7 @@ class CreditsNotes:
             search_text (str): Search credit notes by credit note number or customer name or credit note reference number. Max-length [100]
             sort_column (str): Sort credit notes by following columns customer_name, creditnote_number, balance, total, date and created_time. Allowed Values "customer_name","creditnote_number", "balance total", "date and created_time"
         """
-        return self.base.api._standard_call(f'{self.module}','get',pages = pages, creditnote_number=creditnote_number, date=date, status=status, total=total, reference_numnber=reference_numnber, customer_name=customer_name,\
+        return self.base.api._standard_call(f'{self.module}','get',page = page, creditnote_number=creditnote_number, date=date, status=status, total=total, reference_numnber=reference_numnber, customer_name=customer_name,\
          item_name=item_name, customer_id=customer_id, item_drescription=item_drescription, item_id=item_id, line_item_id=line_item_id, tax_id=tax_id, filter_by=filter_by,search_text=search_text,sort_column=sort_column)
 
     @strict_types
