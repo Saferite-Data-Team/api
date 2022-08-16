@@ -314,6 +314,7 @@ class SOData(Data):
     purchaseorder_number: str= None
     ship_via: str = None
     delivery_org_address_id: str = None
+    last_modified_time: str = None
   
   
   
