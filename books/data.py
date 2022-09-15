@@ -91,7 +91,7 @@ class SOLineItems(Data):
         customer_name: str = None,
         invoice_id: str = None,
         invoice_number: str = None,
-        address_validation: bool = None,
+        #address_validation: bool = None,
         salesorder_item_id: str = None
        ):
 
