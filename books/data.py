@@ -91,7 +91,7 @@ class SOLineItems(Data):
         customer_name: str = None,
         invoice_id: str = None,
         invoice_number: str = None,
-        #address_validation: bool = None,
+        _address_validation: bool = None,
         salesorder_item_id: str = None
        ):
 
@@ -184,6 +184,7 @@ class SOData(Data):
     date: str (required)
     line_items: SOLineItems (required)
     _so_channel: str (required)
+    reason: str (required for update call)
     contact_persons: list
     shipment_date: str (only SO)
     custom_fields: list = { 
@@ -224,6 +225,13 @@ class SOData(Data):
     zcrm_potential_name: str  (only SO)
     _dropship_po: str
     _isp_sales_rep: str
+    _eye4fraud: st
+    _shipping_address_id : str
+    _internal_notes : str 
+    _map : str
+    _pricing  str 
+    _reference : str 
+    _payment_terms : str
     invoice_number: str  (only invoice)
     due_date: str   (only invoice)
     is_discount_before_tax: bool 
@@ -298,6 +306,10 @@ class SOData(Data):
     zcrm_potential_name: str = None
     _dropship_po: str = None
     _isp_sales_rep: str = None
+    _eye4fraud: str = None
+    _internal_notes: str = None
+    _shipping_address_id: str = None
+    _payment_terms: str = None
     invoice_number: str =None
     due_date: str =None
     is_discount_before_tax: bool = None
@@ -317,23 +329,29 @@ class SOData(Data):
     ship_via: str = None
     delivery_org_address_id: str = None
     last_modified_time: str = None
-  
+    reason: str = None
   
   
     def __post_init__(self):
         super().__post_init__()
         
         SO_CHANNELS = {
-            'Field Houston',
-            'Field Miami',
-            'Field Orlando',
-            'Field Los Angeles',
-            'Frontline',
-            'Internet',
-            'ISP Account',
-            'Square',
-            'MDF Vendors'
-        }
+                'Field Houston',
+                'Field Miami',
+                'Field Orlando',
+                'Field Los Angeles',
+                'Frontline',
+                'ISP Outbound Sales',
+                'ISP Order Entry',
+                'Vendors',
+                'MDF Vendors',
+                'Amazon ISP',
+                'BC ISP',
+                'BC SS',
+                'eBay',
+                '3M',
+                'Project N95'
+            }
 
         TRANSACTION_TYPE = {
             'SO-',
@@ -357,17 +375,26 @@ class SOData(Data):
         custom_ids = {
             'SO-': {
             '_so_channel': '1729377000039969865',
-            '_dropship_po': '1729377001216648872'
+            '_dropship_po': '1729377001216648872',
+            '_eye4fraud': '1729377001316393739',
+            '_shipping_address_id': '1729377001314352847',
+            '_internal_notes': '1729377001348214644', 
+            '_isp_sales_rep': '1729377000918761390'
             },
             'INV': {
             '_so_channel': '1729377000880233358',
-            '_dropship_po': '1729377001216648914'
+            '_dropship_po': '1729377001216648914',
+            '_isp_sales_rep':  '1729377000039969883',  
+
             },
             'SQ-': {
             '_so_channel': '1729377001340068453',
+            '_address_validation': '1729377001358036674',
+            '_payment_terms': '1729377000039606098',
+            
             }
-           
         }
+           
 
         for field in custom_data:
             data = {
