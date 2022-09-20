@@ -348,7 +348,8 @@ class SOData(Data):
                 'BC SS',
                 'eBay',
                 '3M',
-                'Project N95'
+                'Project N95',
+                'Internet'
             }
 
         TRANSACTION_TYPE = {
