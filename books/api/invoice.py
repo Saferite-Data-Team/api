@@ -40,7 +40,7 @@ class Invoice:
     def get_all(self, page:int=1, invoice_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
             item_name:str=None, item_description:str=None, custom_field:str=None, due_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, last_modified_time:str=None, balance:str = None, \
                 email:str=None, recurring_invoice_id:str=None,**kwargs ):
-        """_summary_
+        """List all invoices with pagination.
 
         Args:
             page (int): Defaults to 1.
@@ -71,6 +71,47 @@ class Invoice:
             customer_id=customer_id, item_id=item_id, status=status,item_name=item_name, item_description=item_description, custom_field=custom_field, due_date=due_date, datre=date, filter_by=filter_by,\
                 search_text=search_text, sort_column=sort_column, last_modified_time=last_modified_time, balance=balance, email=email, recurring_invoice_id=recurring_invoice_id, ** kwargs)
     
+    def get_all_complete(self, invoice_number:str= None, reference_number:str= None, customer_name:str=None, total:str=None, customer_id:str=None, item_id:str=None,status:str=None,\
+            item_name:str=None, item_description:str=None, custom_field:str=None, due_date:str= None, date:str=None, filter_by:str=None, search_text:str=None, sort_column:str= None, last_modified_time:str=None, balance:str = None, \
+                email:str=None, recurring_invoice_id:str=None,**kwargs ):
+        """List all invoices.
+
+        Args:
+            invoice_number (str): Search invoices by invoice number.
+            reference_number (str): Search invoices by item description.
+            customer_name (str):The name of the customer. Max-length [100]
+            total (str):The total amount to be paid
+            customer_id (str): ID of the customer the invoice has to be created.
+            item_id (str): Search invoices by item id.
+            status (str: Search invoices by invoice status.Allowed Values: "sent", "draft", "overdue", "paid", "void", "unpaid", "partially_paid" "and viewed".
+            item_name(str):Search invoices by item name.
+            item_description (str): Search invoices by item description.
+            custom_field (str):Search invoices by custom fields
+            due_date (str,): Search invoices by due date. Default date format is yyyy-mm-dd. 
+            date (str,): Search invoices by invoice date. Default date format is yyyy-mm-dd.
+            filter_by (str: Filter invoices by any status or payment expected date.Allowed Values: "Status.All", "Status.Sent", "Status.Draft", "Status.OverDue", "Status.Paid", "Status.Void", "Status.Unpaid", "Status.PartiallyPaid", "Status.Viewed" and "Date.PaymentExpectedDate".
+            search_text (str): Search invoices by invoice number or purchase order or customer name. Max-length [100]
+            sort_column (str): Sort invoices.Allowed Values: "customer_name", "invoice_number", "date", "due_date", "total", "balance" and "created_time".
+            last_modified_time (str): Default date format is yyyy-mm-dd.
+            balance (str): The unpaid amount
+            email(str):ID of the recurring invoice from which the invoice is created.
+            recurring_invoice_id (str):ID of the recurring invoice from which the invoice is created..
+
+        Returns:
+            Response
+        """
+        more_pages =  True
+        page = 1
+        all_invoices = []
+        while more_pages:
+            invoices = self.get_all(self, page = page, invoice_number = invoice_number, reference_number=reference_number, customer_name=customer_name , total = total, customer_id = customer_id,item_id =  item_id,status = status,\
+            item_name = item_name,item_description= item_description,custom_field= custom_field,due_state = due_date,date = date,filter_by= filter_by, search_text= search_text, sort_column=sort_column, last_modified_time= last_modified_time, balance= balance, \
+            email=email, recurring_invoice_id= recurring_invoice_id, **kwargs)    
+            all_invoices.extend(invoices)
+            more_pages = invoices['page_context']['has_more_page']
+            page += 1
+        return all_invoices
+
     @strict_types
     def update(self, invoice_id: str, data:SOData):
         """Update an existing invoice. To delete a line item just remove it from the line_items list.
