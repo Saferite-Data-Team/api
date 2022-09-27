@@ -327,7 +327,6 @@ class SOData(Data):
     ship_via: str = None
     delivery_org_address_id: str = None
     last_modified_time: str = None
-    reason: str = None
   
   
     def __post_init__(self):
