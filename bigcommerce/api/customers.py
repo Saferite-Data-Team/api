@@ -16,11 +16,11 @@ class Customer:
         return self.base.api._standard_call(f'{self.module}?id:in={self.base._convert_ids(customer_ids)}', 'get')
 
     @strict_types
-    def create(self, data:list[CustomerData]) -> dict:
+    def create(self, data:"list[CustomerData]") -> dict:
         return self.base.api._standard_call(self.module, 'post', self.base._serializer(data))
 
     @strict_types
-    def update(self, data:list[CustomerData]) -> dict:
+    def update(self, data:"list[CustomerData]") -> dict:
         return self.base.api._standard_call(f'{self.module}', 'put', self.base._serializer(data))
 
     @strict_types

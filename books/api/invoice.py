@@ -104,13 +104,35 @@ class Invoice:
         page = 1
         all_invoices = []
         while more_pages:
-            invoices = self.get_all(self, page = page, invoice_number = invoice_number, reference_number=reference_number, customer_name=customer_name , total = total, customer_id = customer_id,item_id =  item_id,status = status,\
+            # args = {k:v for k,v in locals().items() if k!='self'}
+            # invoices = self.get_all( **args)
+            # invoices = self.get_all(**kwargs) 
+            invoices = self.get_all(page = page, invoice_number = invoice_number, reference_number=reference_number, customer_name=customer_name , total = total, customer_id = customer_id,item_id =  item_id,status = status,\
             item_name = item_name,item_description= item_description,custom_field= custom_field,due_state = due_date,date = date,filter_by= filter_by, search_text= search_text, sort_column=sort_column, last_modified_time= last_modified_time, balance= balance, \
-            email=email, recurring_invoice_id= recurring_invoice_id, **kwargs)    
-            all_invoices.extend(invoices)
+            email=email, recurring_invoice_id= recurring_invoice_id, **kwargs)      
+            all_invoices.extend(invoices['invoices'])
             more_pages = invoices['page_context']['has_more_page']
             page += 1
         return all_invoices
+
+
+
+    def get_all_test(self, **kwargs ):
+    
+        return self.base.api._standard_call(f'{self.module}', 'get',**kwargs)
+    
+    def get_all_complete_test(self, **kwargs ):
+        more_pages =  True
+        page = 1
+        all_invoices = []
+        while more_pages:
+            invoices = self.get_all_test(page = page , **kwargs)   
+            all_invoices.extend(invoices['invoices'])
+            more_pages = invoices['page_context']['has_more_page']
+            page += 1
+        return all_invoices
+
+
 
     @strict_types
     def update(self, invoice_id: str, data:SOData):
