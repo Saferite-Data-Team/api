@@ -40,3 +40,16 @@ book = Books(zoho_token,organization_id )
 first_day_in_month = dt.datetime.now().replace(day=1).strftime("%Y-%m-%dT%H:%M:%S-0400")  
 # i = book.invoices.get_all()
 book.invoices.get_all_complete(last_modified_time = first_day_in_month)
+json_item  ={'name': 'SSH3505017',
+ 'rate': '253.79',
+ 'purchase_rate': '177.65',
+ 'is_returnable': True,
+ 'vendor_id': '1729377000002322717',
+ 'custom_fields': [
+     {
+         'customfield_id': '1729377000400744226',
+         'value': '2022-09-30'
+     }
+]}
+r = book.items.update('1729377000002268054',json_item)
+print(r['message'])
