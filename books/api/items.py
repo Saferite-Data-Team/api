@@ -69,7 +69,7 @@ class Items:
         return self.base.api._standard_call(self.module, 'post', data=data)
     
     @strict_types
-    def update(self, item_id:str, json:dict) -> dict:
+    def update(self, item_id:str, data:ItemData) -> dict:
         """Update the details of an item
 
         Args:
@@ -79,4 +79,4 @@ class Items:
         Returns:
             dict: Response
         """
-        return self.base.api._standard_call(f'{self.module}/{item_id}', 'put', json=json)
+        return self.base.api._standard_call(f'{self.module}/{item_id}', 'put', data=str(data.json))

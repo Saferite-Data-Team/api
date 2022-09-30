@@ -13,11 +13,11 @@ class API:
     prefix: str = field(default_factory=str)
     suffix: str = field(default_factory=str)
 
-    def _standard_call(self, module: str, call_type: str, data: dict = None, json: dict = None, ** kwargs):
+    def _standard_call(self, module: str, call_type: str, data: dict = None, ** kwargs):
         self.payload = f'{self.endpoint}{self.prefix}{module}{self.suffix}'
         additional_args = locals()['kwargs']
         self.params = None if len(additional_args) == 0 else additional_args
-        return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data, json=json).json()
+        return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
 
 class ZohoBooksBase():
     def __init__(self, token: str, organization_id: str):
