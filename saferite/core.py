@@ -19,7 +19,6 @@ class API:
         self.params = None if len(additional_args) == 0 else additional_args
         return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data, json=json).json()
 
-
 class ZohoBooksBase():
     def __init__(self, token: str, organization_id: str):
         self.api = API(
