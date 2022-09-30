@@ -1,7 +1,6 @@
 from books.api import items, salesorder, contacts, estimates, invoice, purchase_order, credits_notes, taxes
 from datetime import datetime
 import requests
-
 class Books:
     def __init__(self, token:str, organization_id:str):
         self.items = items.Items(token, organization_id)
@@ -32,8 +31,6 @@ class Books:
             return f'Token will expired in {expiration} minutes'
         cls.is_token_expired = True
         return 'Token has expired'
-
+    
     def __repr__(self):
-        now = datetime.now()
-        expiration = 60 - now.minute
-        return f'Zoho Books intance in 0x{id(self)}. Token will expire in {expiration} minutes'
+        return f'Zoho Books intance in 0x{id(self)}. {self.token_status}'
