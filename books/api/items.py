@@ -11,9 +11,9 @@ class Items:
         self.module= 'items'
         self.base = ZohoBooksBase(self.token, self.organization_id)
 
-    def get_all(self, page: int = 1) -> dict:
+    def get_all(self, **kwargs) -> dict:
         """Get the list of all active items with pagination."""
-        return self.base.api._standard_call(self.module, 'get', page=page)
+        return self.base.api._standard_call(self.module, 'get', **kwargs)
 
     def get_by_id(self, item_id: str) -> dict:
         """Get details of an existing item.
