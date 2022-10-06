@@ -4,9 +4,9 @@ from ..data import CustomerData, AddressData
 
 @dataclass
 class Customer:
-    def __init__(self, token:str, client:str, store_hash:str):
+    def __init__(self, token:str, store_hash:str):
         self.module = 'customers'
-        self.base = BCBase(token, client, store_hash, 3)
+        self.base = BCBase(token, store_hash, 3)
 
     def get_all(self, **kwargs) -> dict:
         return self.base.api._standard_call(self.module, 'get', **kwargs)
