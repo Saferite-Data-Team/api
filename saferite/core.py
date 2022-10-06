@@ -42,14 +42,13 @@ class ZohoInventoryBase():
 
 
 class BCBase():
-    def __init__(self, token: str, client: str, store_hash: str, version: int):
+    def __init__(self, token: str, store_hash: str, version: int):
         self.api = API(
             endpoint=f'https://api.bigcommerce.com/stores/{store_hash}',
             headers={
                 'accept': "application/json",
                 'content-type': "application/json",
-                'x-auth-token': token,
-                'x-auth-client': client,
+                'x-auth-token': token
             },
             prefix=f'/v{version}/'
         )
