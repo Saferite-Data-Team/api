@@ -377,13 +377,16 @@ class SOData(Data):
             '_eye4fraud': '1729377001316393739',
             '_shipping_address_id': '1729377001314352847',
             '_internal_notes': '1729377001348214644', 
-            '_isp_sales_rep': '1729377000918761390'
+            '_isp_sales_rep': '1729377000918761390',
+            '_address_validation':'1729377001364999109' 
 
             },
             'INV': {
             '_so_channel': '1729377000880233358',
             '_dropship_po': '1729377001216648914',
-            '_isp_sales_rep':  '1729377000039969883',  
+            '_isp_sales_rep':  '1729377000039969883', 
+            '_address_validation': '1729377001364999049'
+            
 
             },
             'SQ-': {
