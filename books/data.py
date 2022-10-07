@@ -228,7 +228,7 @@ class SOData(Data):
     _shipping_address_id : str
     _internal_notes : str 
     _payment_terms : str
-    _address_validation : bool,
+    _address_validation : str
     invoice_number: str  (only invoice)
     due_date: str   (only invoice)
     is_discount_before_tax: bool 
@@ -307,7 +307,7 @@ class SOData(Data):
     _internal_notes: str = None
     _shipping_address_id: str = None
     _payment_terms: str = None
-    _address_validation: bool = None
+    _address_validation: str = None
     invoice_number: str =None
     due_date: str =None
     is_discount_before_tax: bool = None
