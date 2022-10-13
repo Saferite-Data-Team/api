@@ -228,7 +228,7 @@ class SOData(Data):
     _shipping_address_id : str
     _internal_notes : str 
     _payment_terms : str
-    _address_validation : bool,
+    _address_validation : str
     invoice_number: str  (only invoice)
     due_date: str   (only invoice)
     is_discount_before_tax: bool 
@@ -307,7 +307,7 @@ class SOData(Data):
     _internal_notes: str = None
     _shipping_address_id: str = None
     _payment_terms: str = None
-    _address_validation: bool = None
+    _address_validation: str = None
     invoice_number: str =None
     due_date: str =None
     is_discount_before_tax: bool = None
@@ -371,13 +371,16 @@ class SOData(Data):
             '_eye4fraud': '1729377001316393739',
             '_shipping_address_id': '1729377001314352847',
             '_internal_notes': '1729377001348214644', 
-            '_isp_sales_rep': '1729377000918761390'
+            '_isp_sales_rep': '1729377000918761390',
+            '_address_validation':'1729377001364999109' 
 
             },
             'INV': {
             '_so_channel': '1729377000880233358',
             '_dropship_po': '1729377001216648914',
-            '_isp_sales_rep':  '1729377000039969883',  
+            '_isp_sales_rep':  '1729377000039969883', 
+            '_address_validation': '1729377001364999049'
+            
 
             },
             'SQ-': {
