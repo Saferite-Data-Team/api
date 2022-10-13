@@ -1,10 +1,8 @@
-from typing import get_type_hints
-from dataclasses import dataclass, field, fields
-from pyparsing import dictOf
+import base64
 import requests
 from datetime import datetime
-import base64
-
+from typing import get_type_hints
+from dataclasses import dataclass, field, fields
 
 @dataclass
 class API:
@@ -56,8 +54,7 @@ class BCBase():
 
 class ShipstationBase():
     def __init__(self, username: str, password: str):
-        base64_auth = base64.b64encode(
-            f'{username}:{password}'.encode()).decode('utf-8')
+        base64_auth = base64.b64encode(f'{username}:{password}'.encode()).decode('utf-8')
         self.api = API(
             endpoint='https://ssapi.shipstation.com/',
             headers={

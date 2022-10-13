@@ -1,5 +1,4 @@
-from shipstation.api import orders, shipments
-
+from shipstation.api import *
 class Shipstation:
     def __init__(self, username:str, password:str):
         self.orders = orders.Orders(username, password)

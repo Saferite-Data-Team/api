@@ -331,7 +331,6 @@ class SOData(Data):
   
     def __post_init__(self):
         super().__post_init__()
-        
         SO_CHANNELS = {
                 'Field Houston',
                 'Field Miami',
@@ -350,26 +349,21 @@ class SOData(Data):
                 'Project N95',
                 'Internet'
             }
-
         TRANSACTION_TYPE = {
             'SO-',
             'INV',
             'SQ-'
         }
-        
         DISCOUNT_TYPE = {
             'entity level',
             'item_level'
         } 
-
-        
         self.enum_validation("_so_channel", SO_CHANNELS)
         self.enum_validation("_transaction_type", TRANSACTION_TYPE)
         self.enum_validation("discount_type", DISCOUNT_TYPE)
         self.date_validation(['date', 'shipment_date','expiry_date','delivery_date','due_date'], '%Y-%m-%d')
         self.line_items = self.line_items.data
         custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
-
         custom_ids = {
             'SO-': {
             '_so_channel': '1729377000039969865',
