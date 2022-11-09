@@ -24,7 +24,7 @@ class SalesOrder:
         return self.base.api._standard_call(f'{self.module}/{order_id}', 'get')
     
     @strict_types
-    def create(self, data: SOData):
+    def create(self, data: SOData,ignore_auto_number_generation:bool = True):
         """Create a sales order for your customer.
 
         Args:
@@ -33,7 +33,7 @@ class SalesOrder:
         Returns:
             Response
         """
-        return self.base.api._standard_call(self.module, 'post', data=str(data.json))
+        return self.base.api._standard_call(self.module, 'post', data=str(data.json),ignore_auto_number_generation=ignore_auto_number_generation)
     
     def get_all(self, page: int=1, salesorder_number:str= None, shipment_date:str= None, customer_name:str=None, total:str=None, customer_id:str=None, salesperson_id: str = None,\
          salesorders_ids:str= None, last_modified_time: str = None, customview_id: str = None, item_id:str=None,status:str=None,item_name:str=None, item_description:str=None,\
