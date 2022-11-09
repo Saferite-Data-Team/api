@@ -328,7 +328,7 @@ class SOData(Data):
     delivery_org_address_id: str = None
     last_modified_time: str = None
     order_status: str = None
-  
+    ignore_auto_number_generation:bool = True
   
     def __post_init__(self):
         super().__post_init__()
