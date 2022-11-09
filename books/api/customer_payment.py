@@ -13,7 +13,7 @@ class Payment:
         self.module = "customerpayments"
         
     @strict_types
-    def create(self, data:dict):
+    def create(self, data:PaymentData):
         """Create a payment for your invoices
         Args:
             data (dict)
