@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+
 from saferite.core import BCBase, strict_types
+
 from ..data import OrderData, RefundData, ShipmentData, ShippingAddressData
+
 
 @dataclass
 class Order:

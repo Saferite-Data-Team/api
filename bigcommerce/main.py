@@ -1,5 +1,6 @@
-from saferite.core import BCBase
 from bigcommerce.api import *
+from saferite.core import BCBase
+
 
 class BC:
     def __init__(self, token:str, store_hash:str):

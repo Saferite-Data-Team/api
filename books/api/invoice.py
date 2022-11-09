@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+
+from books.data import AddressData, ItemData, SOData
 from saferite.core import ZohoBooksBase, strict_types
-from books.data import ItemData, SOData, AddressData
+
 
 @dataclass
 class Invoice:

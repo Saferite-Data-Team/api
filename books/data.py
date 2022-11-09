@@ -24,6 +24,7 @@ class ItemData(Data):
     initial_stock: str = None
     initial_stock_rate: str = None
     
+    
     def __post_init__(self):
         super().__post_init__()
         
@@ -39,7 +40,7 @@ class ItemData(Data):
 
 @dataclass
 class SOLineItems(Data):
-    _data_: list = field(default_factory=list, init=False)
+    __data: list = field(default_factory=list, init=False)
     
     def __call__(
         self,
@@ -94,9 +95,10 @@ class SOLineItems(Data):
         salesorder_item_id: str = None
        ):
 
-        _data = {k:v for k, v in locals().items() if v is not None and k != "self"}
-        self._data_.append(_data)
-    
+        _data_ = {k:v for k, v in locals().items() if v is not None and k != "self"}
+        self.__data.append(_data_)
+        
+  
     @staticmethod
     def fields():
         field_list = [
@@ -132,9 +134,9 @@ class SOLineItems(Data):
 
     @property
     def data(self):
-        if self._data_ == []:
+        if self.__data == []:
             raise ValueError('No data has been passed to the SOLineItems class')
-        return self._data_
+        return self.__data
     
     @property
     def reset_data(self):
@@ -143,8 +145,6 @@ class SOLineItems(Data):
 
 @dataclass
 class TaxData(Data):
-
-
     tax_name: str 
     tax_percentage: str 
     tax_type: str = None
@@ -327,6 +327,7 @@ class SOData(Data):
     ship_via: str = None
     delivery_org_address_id: str = None
     last_modified_time: str = None
+    order_status: str = None
   
   
     def __post_init__(self):

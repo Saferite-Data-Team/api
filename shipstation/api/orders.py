@@ -5,7 +5,18 @@ class Orders(ShipstationBase):
     def __init__(self, username: str, password: str):
         self.base = ShipstationBase(username, password)
         self.module = 'orders'
-
+        
+    def while_(self,**kwargs):
+            page = 1
+            pages = 1
+            data_full = []
+            while page <= pages:
+                data = self.get_by_all(page=page,**kwargs)
+                data_full+=data['orders']
+                page += 1
+                pages = data['pages']
+            return data_full   
+         
     def get_by_all(self, page: int = 1, **kwargs):
         """List all orders with pagination.
         Args:

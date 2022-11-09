@@ -1,8 +1,10 @@
 import base64
-import requests
+from dataclasses import dataclass, field, fields
 from datetime import datetime
 from typing import get_type_hints
-from dataclasses import dataclass, field, fields
+
+import requests
+
 
 @dataclass
 class API:
@@ -17,6 +19,7 @@ class API:
         self.params = None if len(additional_args) == 0 else additional_args
         return getattr(requests, call_type)(url=self.payload, headers=self.headers, params=self.params, data=data).json()
 
+
 class ZohoBooksBase():
     def __init__(self, token: str, organization_id: str):
         self.api = API(
@@ -26,7 +29,6 @@ class ZohoBooksBase():
             },
             suffix=f'?organization_id={organization_id}'
         )
-
 
 class ZohoInventoryBase():
     def __init__(self, token: str, organization_id: str):
@@ -51,10 +53,10 @@ class BCBase():
             prefix=f'/v{version}/'
         )
 
-
 class ShipstationBase():
     def __init__(self, username: str, password: str):
-        base64_auth = base64.b64encode(f'{username}:{password}'.encode()).decode('utf-8')
+        base64_auth = base64.b64encode(
+            f'{username}:{password}'.encode()).decode('utf-8')
         self.api = API(
             endpoint='https://ssapi.shipstation.com/',
             headers={
@@ -62,9 +64,19 @@ class ShipstationBase():
             }
         )
 
+class MMM():
+    def __init__(self, shop_key: str):
+        self.api = API(
+            endpoint='https://3m.mirakl.net',
+            headers={
+                'Content-Type': 'application/json',
+                'authorization': shop_key,
+                'Accept': 'application/json'
+            }
+        )
 
 class Data:
-
+    
     @property
     def json(self):
         return {k: v for k, v in self.__dict__.items() if v is not None and k not in ['data'] and not k.startswith('_')}

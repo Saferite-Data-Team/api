@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 from saferite.core import Data
+
 
 @dataclass
 class AddressData(Data):
