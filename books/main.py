@@ -1,4 +1,4 @@
-from books.api import items, salesorder, contacts, estimates, invoice, purchase_order, credits_notes, taxes
+from books.api import items, salesorder, contacts, estimates, invoice, purchase_order, credits_notes, taxes, customer_payment
 from datetime import datetime
 import requests
 class Books:
@@ -11,6 +11,7 @@ class Books:
         self.credits_notes = credits_notes.CreditsNotes(token, organization_id)
         self.purchase_order = purchase_order.PurchaseOrder(token, organization_id)
         self.taxes = taxes.Taxes(token, organization_id)
+        self.customer_payment = customer_payment(token, organization_id)
 
     @classmethod
     def refresh_token(cls, token:str, client_id:str, client_secret:str):
