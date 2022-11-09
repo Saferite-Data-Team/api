@@ -11,7 +11,7 @@ class Books:
         self.credits_notes = credits_notes.CreditsNotes(token, organization_id)
         self.purchase_order = purchase_order.PurchaseOrder(token, organization_id)
         self.taxes = taxes.Taxes(token, organization_id)
-        self.customer_payment = customer_payment(token, organization_id)
+        self.customer_payment = customer_payment.Payment(token, organization_id)
 
     @classmethod
     def refresh_token(cls, token:str, client_id:str, client_secret:str):
