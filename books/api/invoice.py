@@ -25,7 +25,7 @@ class Invoice:
         Returns:
             Response
         """
-        return self.base.api._standard_call(f'{self.module}', 'post', data=data, send=send, ignore_auto_generation=ignore_auto_generation)
+        return self.base.api._standard_call(f'{self.module}', 'post', json_data=data, send=send, ignore_auto_generation=ignore_auto_generation)
     
     def get_by_id(self, invoice_id:str):
         """Get the details of an invoice.
