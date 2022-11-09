@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from saferite.core import Data
 
+
 @dataclass
 class ItemData(Data):
     name: str
@@ -23,31 +24,31 @@ class ItemData(Data):
     reorder_level: str = None
     initial_stock: str = None
     initial_stock_rate: str = None
-    
-    
+
     def __post_init__(self):
         super().__post_init__()
-        
+
         PRODUCT_TYPES = {'goods', 'service', 'digital_service'}
         ITEM_TYPES = {"sales", "purchases", "sales_and_purchases", "inventory"}
-        
+
         self.enum_validation("product_type", PRODUCT_TYPES)
         self.enum_validation("item_type", ITEM_TYPES)
-       
+
         if self.is_taxable is not None and not self.is_taxable and self.tax_exemption_id is None:
-            raise TypeError('tax_exemption_id is required when is_taxable is False')
+            raise TypeError(
+                'tax_exemption_id is required when is_taxable is False')
 
 
 @dataclass
 class SOLineItems(Data):
     __data: list = field(default_factory=list, init=False)
-    
+
     def __call__(
         self,
         item_id: str,
         rate: float,
         quantity: int,
-        bcy_rate:float = None,
+        bcy_rate: float = None,
         line_item_id: str = None,
         item_order: str = None,
         name: str = None,
@@ -55,7 +56,7 @@ class SOLineItems(Data):
         product_type: str = None,
         warehouse_id: str = None,
         discount: str = None,
-        discount_amount:float = None,
+        discount_amount: float = None,
         tax_id: str = None,
         tags: list = None,
         unit: str = None,
@@ -71,10 +72,10 @@ class SOLineItems(Data):
         avatax_use_code: str = None,
         project_id: str = None,
         project_name: str = None,
-        expense_id:str = None,
+        expense_id: str = None,
         expense_receipt_name: str = None,
-        time_entry_ids:list = None,
-        custom_body : str = None,
+        time_entry_ids: list = None,
+        custom_body: str = None,
         custom_subject: str = None,
         notes: str = None,
         terms: str = None,
@@ -93,12 +94,12 @@ class SOLineItems(Data):
         invoice_id: str = None,
         invoice_number: str = None,
         salesorder_item_id: str = None
-       ):
+    ):
 
-        _data_ = {k:v for k, v in locals().items() if v is not None and k != "self"}
+        _data_ = {k: v for k, v in locals().items()
+                  if v is not None and k != "self"}
         self.__data.append(_data_)
-        
-  
+
     @staticmethod
     def fields():
         field_list = [
@@ -122,7 +123,7 @@ class SOLineItems(Data):
             'project_id'
         ]
         return field_list
-    
+
     @property
     def required_fields(self):
         field_list = [
@@ -135,9 +136,10 @@ class SOLineItems(Data):
     @property
     def data(self):
         if self.__data == []:
-            raise ValueError('No data has been passed to the SOLineItems class')
+            raise ValueError(
+                'No data has been passed to the SOLineItems class')
         return self.__data
-    
+
     @property
     def reset_data(self):
         self.data = []
@@ -145,8 +147,8 @@ class SOLineItems(Data):
 
 @dataclass
 class TaxData(Data):
-    tax_name: str 
-    tax_percentage: str 
+    tax_name: str
+    tax_percentage: str
     tax_type: str = None
     tax_authority_name: str = None
     tax_authority_id: str = None
@@ -171,8 +173,8 @@ class TaxData(Data):
 
         self.enum_validation("tax_type", TAX_TYPE)
 
-@dataclass
 
+@dataclass
 @dataclass
 class SOData(Data):
     """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
@@ -308,14 +310,14 @@ class SOData(Data):
     _shipping_address_id: str = None
     _payment_terms: str = None
     _address_validation: str = None
-    invoice_number: str =None
-    due_date: str =None
+    invoice_number: str = None
+    due_date: str = None
     is_discount_before_tax: bool = None
     recurring_invoice_id: str = None
     invoice_estimate_id: str = None
     allow_partial_payments: bool = None
-    estimate_number:str= None
-    expiry_date: str= None
+    estimate_number: str = None
+    expiry_date: str = None
     reason: str = None
     payment_options: dict = None
     tags: list = None
@@ -323,33 +325,32 @@ class SOData(Data):
     credit_note_number: str = None
     delivery_date: str = None
     vendor_id: str = None
-    purchaseorder_number: str= None
+    purchaseorder_number: str = None
     ship_via: str = None
     delivery_org_address_id: str = None
     last_modified_time: str = None
     order_status: str = None
-  
-  
+
     def __post_init__(self):
         super().__post_init__()
         SO_CHANNELS = {
-                'Field Houston',
-                'Field Miami',
-                'Field Orlando',
-                'Field Los Angeles',
-                'Frontline',
-                'ISP Outbound Sales',
-                'ISP Order Entry',
-                'Vendors',
-                'MDF Vendors',
-                'Amazon ISP',
-                'BC ISP',
-                'BC SS',
-                'eBay',
-                '3M',
-                'Project N95',
-                'Internet'
-            }
+            'Field Houston',
+            'Field Miami',
+            'Field Orlando',
+            'Field Los Angeles',
+            'Frontline',
+            'ISP Outbound Sales',
+            'ISP Order Entry',
+            'Vendors',
+            'MDF Vendors',
+            'Amazon ISP',
+            'BC ISP',
+            'BC SS',
+            'eBay',
+            '3M',
+            'Project N95',
+            'Internet'
+        }
         TRANSACTION_TYPE = {
             'SO-',
             'INV',
@@ -358,40 +359,41 @@ class SOData(Data):
         DISCOUNT_TYPE = {
             'entity level',
             'item_level'
-        } 
+        }
         self.enum_validation("_so_channel", SO_CHANNELS)
         self.enum_validation("_transaction_type", TRANSACTION_TYPE)
         self.enum_validation("discount_type", DISCOUNT_TYPE)
-        self.date_validation(['date', 'shipment_date','expiry_date','delivery_date','due_date'], '%Y-%m-%d')
+        self.date_validation(
+            ['date', 'shipment_date', 'expiry_date', 'delivery_date', 'due_date'], '%Y-%m-%d')
         self.line_items = self.line_items.data
-        custom_data = {k:v for k, v in self.__dict__.items() if k.startswith('_') and v is not None and k != '_transaction_type'}
+        custom_data = {k: v for k, v in self.__dict__.items() if k.startswith(
+            '_') and v is not None and k != '_transaction_type'}
         custom_ids = {
             'SO-': {
-            '_so_channel': '1729377000039969865',
-            '_dropship_po': '1729377001216648872',
-            '_eye4fraud': '1729377001316393739',
-            '_shipping_address_id': '1729377001314352847',
-            '_internal_notes': '1729377001348214644', 
-            '_isp_sales_rep': '1729377000918761390',
-            '_address_validation':'1729377001364999109' 
+                '_so_channel': '1729377000039969865',
+                '_dropship_po': '1729377001216648872',
+                '_eye4fraud': '1729377001316393739',
+                '_shipping_address_id': '1729377001314352847',
+                '_internal_notes': '1729377001348214644',
+                '_isp_sales_rep': '1729377000918761390',
+                '_address_validation': '1729377001364999109'
 
             },
             'INV': {
-            '_so_channel': '1729377000880233358',
-            '_dropship_po': '1729377001216648914',
-            '_isp_sales_rep':  '1729377000039969883', 
-            '_address_validation': '1729377001364999049'
-            
+                '_so_channel': '1729377000880233358',
+                '_dropship_po': '1729377001216648914',
+                '_isp_sales_rep':  '1729377000039969883',
+                '_address_validation': '1729377001364999049'
+
 
             },
             'SQ-': {
-            '_so_channel': '1729377001340068453',
-            '_address_validation': '1729377001358036674',
-            '_payment_terms': '1729377000039606098',
-            
+                '_so_channel': '1729377001340068453',
+                '_address_validation': '1729377001358036674',
+                '_payment_terms': '1729377000039606098',
+
             }
         }
-           
 
         for field in custom_data:
             data = {
@@ -399,7 +401,8 @@ class SOData(Data):
                 'value': custom_data[field]
             }
             self.custom_fields.append(data)
-    
+
+
 @dataclass
 class AddressData(Data):
     """
@@ -425,7 +428,7 @@ class AddressData(Data):
     state: str
     zip: str
     country: str = 'U.S.A'
-    street2:str = None
+    street2: str = None
     phone: str = None
     fax: str = None
     attention: str = None
@@ -433,20 +436,22 @@ class AddressData(Data):
     is_update_customer: bool = None
     is_verified: bool = None
 
+
 @dataclass
 class ContactPersonData(Data):
     first_name: str
     last_name: str
-    email:str
-    phone:str
-    mobile:str=None
+    email: str
+    phone: str
+    mobile: str = None
     salutation: str = None
     designation: str = None
     department: str = None
     skype: str = None
     is_primary_contact: bool = None
     enable_portal: bool = None
-    
+
+
 @dataclass
 class DefaultTemplates(Data):
     invoice_template_id: str = None
@@ -465,14 +470,15 @@ class DefaultTemplates(Data):
     retainerinvoice_email_template_id: str = None
     paymentthankyou_email_template_id: str = None
     retainerinvoice_paymentthankyou_email_template_id: str = None
-  
+
+
 @dataclass
 class ContactData(Data):
     contact_name: str
     company_name: str
     billing_address: AddressData
     shipping_address: AddressData
-    website:str = None
+    website: str = None
     language_code: str = None
     contact_type: str = None
     customer_sub_type: str = None
@@ -500,13 +506,14 @@ class ContactData(Data):
     track_1099: bool = None
     tax_id_type: str = None
     tax_id_value: str = None
-    
+
     def __post_init__(self):
         super().__post_init__()
         self.billing_address = self.billing_address.json
         self.shipping_address = self.shipping_address.json
 
-@dataclass   
+
+@dataclass
 class BillsData(Data):
     """
     purchaseorder_ids: [
@@ -526,7 +533,7 @@ class BillsData(Data):
             "index": 0,
             "value": "string",
             "label": "string"
-                
+
         }
     ]
      "purchaseorders"(list): [
@@ -585,7 +592,7 @@ class BillsData(Data):
 
 
 
-    
+
     """
     bill_id: str
     purchaseorder_ids: list
@@ -598,7 +605,7 @@ class BillsData(Data):
     bill_number: str = None
     date: str = None
     due_date: str = None
-    payment_terms:str = None
+    payment_terms: str = None
     payment_terms_label: str = None
     payment_expected_date: str = None
     reference_number: str = None
@@ -611,7 +618,7 @@ class BillsData(Data):
     price_precision: int = None
     exchange_rate: float = None
     adjustment: float = None
-    adjustment_description: str = None 
+    adjustment_description: str = None
     custom_fields: list = None
     is_item_level_taxcalc: bool = None
     line_items: SOLineItems = None
@@ -638,7 +645,60 @@ class BillsData(Data):
     def __post_init__(self):
         super().__post_init__()
 
+        self.date_validation(
+            ['date', 'due_date', 'payment_expected_date', 'created_time'], '%Y-%m-%d')
 
-        self.date_validation(['date','due_date','payment_expected_date', 'created_time'], '%Y-%m-%d')
 
+@dataclass
+class PaymentData(Data):
+    __data: list = field(default_factory=list, init=False)
 
+    def __call__(
+        self,
+        customer_id: str,
+        payment_mode: str,
+        amount: float,
+        date: str,
+        invoices: list,
+        invoice_id:str,
+        amount_applied:float,
+        reference_number: str = None,
+        description: str = None,
+        exchange_rate: float = None,
+        bank_charges:float = None,
+        custom_fields:list = None,
+        tax_amount_withheld:float = None,
+        account_id:str = None
+        ):
+        _data_ = {k:v for k, v in locals().items() if v is not None and k != 'self'}
+        self.__data.append(_data_)
+    
+    @staticmethod
+    def fields():
+        field_list = [
+        'customer_id',
+        'payment_mode',
+        'amount',
+        'date',
+        'invoices',
+        'invoice_id',
+        'amount_applied',
+        'reference_number',
+        'description',
+        'exchange_rate',
+        'bank_charges',
+        'custom_fields',
+        'tax_amount_withheld',
+        'account_id'
+        ]
+    
+    @property
+    def data(self):
+        if self.__data == []:
+            raise ValueError("No data has been passed to the PaymentData")
+        return self.__data
+    
+    @property
+    def reset_data(self):
+        self.data = []
+        
