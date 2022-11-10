@@ -20,7 +20,7 @@ class Payment:
         Returns
             Response
         """
-        return self.base.api._standard_call(f'{self.module}', 'post', json_data=data)
+        return self.base.api._standard_call(f'{self.module}', 'post', json_data=data.json)
 
 
 
