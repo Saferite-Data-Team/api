@@ -362,11 +362,9 @@ class SOData(Data):
         self.enum_validation("_so_channel", SO_CHANNELS)
         self.enum_validation("_transaction_type", TRANSACTION_TYPE)
         self.enum_validation("discount_type", DISCOUNT_TYPE)
-        self.date_validation(
-            ['date', 'shipment_date', 'expiry_date', 'delivery_date', 'due_date'], '%Y-%m-%d')
+        self.date_validation(['date', 'shipment_date', 'expiry_date', 'delivery_date', 'due_date'], '%Y-%m-%d')
         self.line_items = self.line_items.data
-        custom_data = {k: v for k, v in self.__dict__.items() if k.startswith(
-            '_') and v is not None and k != '_transaction_type'}
+        custom_data = {k: v for k, v in self.__dict__.items() if k.startswith( '_') and v is not None and k != '_transaction_type'}
         custom_ids = {
             'SO-': {
                 '_so_channel': '1729377000039969865',
@@ -650,35 +648,22 @@ class BillsData(Data):
 
 @dataclass
 class PaymentData(Data):
-    __data: dict = field(default_factory=dict, init=False)
 
-    def __call__(
-        self,
-        customer_id: str,
-        payment_mode: str,
-        amount: float,
-        date: str,
-        invoices: list,
-        invoice_id:str,
-        amount_applied:float,
-        reference_number: str = None,
-        description: str = None,
-        exchange_rate: float = None,
-        bank_charges:float = None,
-        custom_fields:list = None,
-        tax_amount_withheld:float = None,
-        account_id:str = None
-        ):
-        self.__data = {k:v for k, v in locals().items() if v is not None and k != 'self'}
-    
-    
-    @property
-    def data(self):
-        if self.__data == {}:
-            raise ValueError("No data has been passed to the PaymentData")
-        return self.__data
-    
-    @property
-    def reset_data(self):
-        self.data = {}
-        
+    customer_id: str
+    payment_mode: str
+    amount: float
+    date: str
+    invoices: list
+    invoice_id:str
+    amount_applied:float
+    reference_number: str = None
+    description: str = None
+    exchange_rate: float = None
+    bank_charges:float = None
+    custom_fields:list = None
+    tax_amount_withheld:float = None
+    account_id:str = None
+       
+    def __post_init__(self):
+        super().__post_init__()
+   
