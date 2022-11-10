@@ -663,6 +663,7 @@ class PaymentData(Data):
     custom_fields:list = None
     tax_amount_withheld:float = None
     account_id:str = None
+    template_id:str = None
        
     def __post_init__(self):
         super().__post_init__()
