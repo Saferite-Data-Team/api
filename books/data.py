@@ -650,7 +650,7 @@ class BillsData(Data):
 
 @dataclass
 class PaymentData(Data):
-    __data: dict = field(default_factory=list, init=False)
+    __data: dict = field(default_factory=dict, init=False)
 
     def __call__(
         self,
@@ -671,24 +671,6 @@ class PaymentData(Data):
         ):
         self.__data = {k:v for k, v in locals().items() if v is not None and k != 'self'}
     
-    @staticmethod
-    def fields():
-        field_list = [
-        'customer_id',
-        'payment_mode',
-        'amount',
-        'date',
-        'invoices',
-        'invoice_id',
-        'amount_applied',
-        'reference_number',
-        'description',
-        'exchange_rate',
-        'bank_charges',
-        'custom_fields',
-        'tax_amount_withheld',
-        'account_id'
-        ]
     
     @property
     def data(self):
