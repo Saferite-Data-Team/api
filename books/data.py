@@ -175,7 +175,6 @@ class TaxData(Data):
 
 
 @dataclass
-@dataclass
 class SOData(Data):
     """Data model for SO, Invoices, Estimates, CreditNotes and PurchaseOrders
 
@@ -651,7 +650,7 @@ class BillsData(Data):
 
 @dataclass
 class PaymentData(Data):
-    __data: list = field(default_factory=list, init=False)
+    __data: dict = field(default_factory=list, init=False)
 
     def __call__(
         self,
@@ -670,8 +669,7 @@ class PaymentData(Data):
         tax_amount_withheld:float = None,
         account_id:str = None
         ):
-        _data_ = {k:v for k, v in locals().items() if v is not None and k != 'self'}
-        self.__data.append(_data_)
+        self.__data = {k:v for k, v in locals().items() if v is not None and k != 'self'}
     
     @staticmethod
     def fields():
@@ -694,11 +692,11 @@ class PaymentData(Data):
     
     @property
     def data(self):
-        if self.__data == []:
+        if self.__data == {}:
             raise ValueError("No data has been passed to the PaymentData")
         return self.__data
     
     @property
     def reset_data(self):
-        self.data = []
+        self.data = {}
         
